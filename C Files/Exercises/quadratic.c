@@ -5,7 +5,7 @@ int main() {
   int a, b, c;
   double D, s, r;
 
-  printf("Quadrartic equation solver: ax²+ bx + c = 0\n");
+  printf("Quadratic equation solver: ax²+ bx + c = 0\n");
   printf("Enter a value for a: ");
   scanf("%d", &a);
   printf("Enter a value for b: ");
