@@ -164,4 +164,3 @@ class NonSWDCustomer(GeneralCustomer):
     def __init__(self, id, name, isUPI):
         super().__init__(id, name)
         self.mode_of_payment = "UPI" if isUPI else "CASH"
-
