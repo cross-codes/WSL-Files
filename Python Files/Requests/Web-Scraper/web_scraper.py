@@ -11,14 +11,14 @@ import csv
 from prettytable import PrettyTable
 
 
-driver = webdriver.Chrome("home/Programming/'Python Files'/'Web-Scraper'/chromedriver")
+driver = webdriver.Chrome("/home/akshaj/Programming/Python Files/Requests/Web-Scraper/chromedriver")
 
 BASE_URL = "https://www.myntra.com/shoes?p="
 
 for x in range(1, 5):
-    print ("Currently on page: ", x)
+    print("Currently on page: ", x)
     driver.get(BASE_URL + str(x))
-    driver.execute_script("window.scrollTo(0,document.body.scrollHeight)") 
+    driver.execute_script("window.scrollTo(0,document.body.scrollHeight)")
     # Because Myntra's page is dynamic, this ensures that all entries load by scrolling down to the bottom
 
     resultset = driver.find_elements(By.CLASS_NAME, "product-base")
@@ -34,10 +34,10 @@ for x in range(1, 5):
             skip_count = skip_count + 1
             continue
 
-        if "sneaker" in shoe_name.lower():    
+        if "sneaker" in shoe_name.lower():
             sneaker_params[shoe_name] = rating
-    
-    print ("Skipped", skip_count, "entries due to missing information.")
+
+    print("Skipped", skip_count, "entries due to missing information.")
 
 # There is no true "category" of shoes within the pages itself, so we use a default category of "sneakers".
 file = open("sneakers.csv", "w", newline="")  # Note: "sneakers.csv" will be made in the current directory
