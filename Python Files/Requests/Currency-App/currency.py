@@ -8,7 +8,6 @@ from prettytable import PrettyTable
 
 BASE_URL = "https://api.apilayer.com/exchangerates_data/"
 
-
 def _get_key():
     configuration = ConfigParser()
     configuration.read("secrets.ini")
@@ -22,7 +21,7 @@ def read_user_cli_arguments():
     parser.add_argument("from", nargs="+", type=str, help="Enter the three letter currency code you want to convert from")
     parser.add_argument("to", nargs="+", type=str, help="Enter the three letter currency code you want to convert to")
     parser.add_argument("amount", nargs="+", type=float, help="Enter the amount of money")
-    return parser.parse_args()  #To access the dictionary variant, use vars()
+    return parser.parse_args()  # To access the dictionary variant, use vars()
 
 
 def convert(cur_from, cur_to, cur_amount, ent_date):
