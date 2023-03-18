@@ -21,7 +21,7 @@ def solve(problem):
 
         n = 0
 
-        for w in rang(len(list2)-1, -1, -1):
+        for w in range(len(list2)-1, -1, -1):
             num2 = num2 + (int(list2[w])*pow(10, n))
             n += 1
 
