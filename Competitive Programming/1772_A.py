@@ -28,8 +28,8 @@ def solve(problem):
         return (num1 + num2)
 
 
-t = int(input())
-while (t > 0):
-    t = t-1
-    x = input()
-    print(solve(x))
+a = int(input())
+while (a > 0):
+    a = a-1
+    b = input()
+    print(solve(b))
