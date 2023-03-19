@@ -1,10 +1,11 @@
-# utils
+# utils.py
 
 from definitions import Item
 from prettytable import PrettyTable
 import admin_credentials
 import getpass
 import random
+
 
 def login():
     global isUPI
