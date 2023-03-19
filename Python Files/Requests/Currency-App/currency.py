@@ -8,6 +8,7 @@ from prettytable import PrettyTable
 
 BASE_URL = "https://api.apilayer.com/exchangerates_data/"
 
+
 def _get_key():
     configuration = ConfigParser()
     configuration.read("secrets.ini")
