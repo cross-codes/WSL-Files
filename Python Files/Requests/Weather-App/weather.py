@@ -18,7 +18,7 @@ CLEAR = range(800, 801)
 CLOUDY = range(801, 900)
 
 
-def _get_key():  # _<>() implies the function is non-public
+def _get_key():  # _<>() implies the function is not public
     configuration = ConfigParser()
     configuration.read("secrets.ini")
     return configuration["OpenWeather"]["api_key"]
