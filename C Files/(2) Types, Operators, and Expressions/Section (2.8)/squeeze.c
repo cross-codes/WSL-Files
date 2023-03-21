@@ -25,8 +25,8 @@ void squeeze(char s1[], char s2[]) {
     for (j = 0; s2[j] != '\0' && s2[j] != s1[i]; j++)
       ;
     if (s2[j] == '\0') /* This can only be reached if the match doesn't happen*/
-      s1[k++] =
-          s1[i]; /* This will replace the positions of any one that matched*/
+      s1[k++] = s1[i]; /* This will replace the positions of any one that didn't
+                          match*/
   }
   s1[k] = '\0';
 }
