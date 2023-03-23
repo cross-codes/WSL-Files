@@ -3,11 +3,11 @@
 void escape(char final[], char initial[]);
 
 int main() {
-  char t[] = "This is a tab space\t";
+  char t[] = "This is a tab space   ";
   char s[200];
 
   escape(s, t);
-  printf("%s\n, %s\n", s, t);
+  printf("%s\n %s\n", s, t);
   return 0;
 }
 
