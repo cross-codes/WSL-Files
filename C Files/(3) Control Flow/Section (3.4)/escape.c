@@ -30,5 +30,4 @@ void escape(char s[], char t[]) {
     }
   s[j] = '\0';
 }
-/*$$r_n = \frac{n^2}{Z} a_0 \text{   and }
- * E_n=-\frac{k_ee^2}{2a_0}.(\frac{Z^2}{n^2})$$*/
+/*$R = \frac{{v_i}^2. sin(2\theta)}{2g}$*/
