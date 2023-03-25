@@ -30,4 +30,4 @@ void escape(char s[], char t[]) {
     }
   s[j] = '\0';
 }
-/*$R = \frac{{v_i}^2. sin(2\theta)}{2g}$*/
+/*$R \ \ =\ \ \frac{{v_i}^2. sin(2\theta)}{2g}$*/
