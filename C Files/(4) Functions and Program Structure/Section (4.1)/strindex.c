@@ -29,7 +29,6 @@ int strindex(char s[], char t[]) {
   reverse(s);
   reverse(t);
 
-  printf("%s, %s\n", s, t);
   for (i = 0; s[i] != '\0'; i++) {
     for (j = i, k = 0; t[k] != '\0' && s[j] == t[k]; j++, k++)
       ;
