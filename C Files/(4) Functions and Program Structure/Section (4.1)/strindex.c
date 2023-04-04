@@ -5,6 +5,7 @@ void reverse(char string[]);
 int strindex(char source[], char string[]);
 
 int main() {
+
   int found;
   char source[] = "This is an occurence is of sorts";
   char string[] = "is";
