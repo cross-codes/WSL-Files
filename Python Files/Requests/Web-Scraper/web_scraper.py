@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 import csv
 from prettytable import PrettyTable
 
-
+# The link below is currently broken, working on a fix at the moment
 driver = webdriver.Chrome("/home/akshaj/Programming/Python Files/Requests/Web-Scraper/chromedriver")
 
 BASE_URL = "https://www.myntra.com/shoes?p="
