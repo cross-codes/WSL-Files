@@ -8,7 +8,7 @@ int main() {
   int i;
 
   qsort(arr, 0, 8);
-  for (i = 0; i < 9; ++i)
+  for (i = 0; i < 9; i++)
     printf("%d ", arr[i]);
   printf("\n");
 
