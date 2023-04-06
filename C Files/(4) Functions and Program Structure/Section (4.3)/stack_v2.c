@@ -25,10 +25,7 @@ int pop(int arr[]) {
     return -1;
   } else if (top > 0)
     return arr[top--];
-  else {
-    top = -1;
-    return arr[0];
-  }
+  return -1;
 }
 
 int push(int arr[], int e) {
