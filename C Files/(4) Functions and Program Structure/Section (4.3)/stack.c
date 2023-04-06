@@ -30,10 +30,7 @@ int push(double f, double v[]) {
 
 double pop(double v[]) {
   if (sp > 0) {
-    double val;
-    v[--sp] = val;
-    v[sp] = 0.0;
-    return val;
+    return v[--sp];
   } else {
     printf("Error: Stack underflow\n");
     return 0.0;
