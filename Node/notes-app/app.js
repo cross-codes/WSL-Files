@@ -9,4 +9,4 @@ console.log(sum);
 const val = getNotes();
 console.log(val);
 
-console.log(chalk.green.bold("Success!"));
+console.log(chalk.blue.bold("Error!"));
