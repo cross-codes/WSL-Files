@@ -1,0 +1,2 @@
+Hello. My name is Cross
+This sentence must be appended to the file
