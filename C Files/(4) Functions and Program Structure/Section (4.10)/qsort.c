@@ -15,7 +15,7 @@ int main() {
   return 0;
 }
 
-void qsort(int v[], int left, int right) {
+void qsort(int v[], register int left, register int right) {
   int i, last;
 
   if (left >= right)
