@@ -8,4 +8,4 @@ console.log(sum);
 const val = getNotes();
 console.log(val);
 
-console.log(chalk.green("Success!"));
+console.log(chalk.green.bold.inverse("Success!"));
