@@ -1,9 +1,8 @@
-console.log('utlis.js')
-const name = 'Cross'
+console.log("utlis.js");
+const name = "Cross";
 
-const add = function(x, y) {
-	return x + y
+const add = function (x, y) {
+  return x + y;
+};
 
-}
-
-module.exports = add
+module.exports = add;
