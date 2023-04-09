@@ -1,4 +1,4 @@
-const validator = require("validator");
+const chalk = require("chalk");
 const add = require("./utils");
 const getNotes = require("./notes");
 
@@ -7,5 +7,5 @@ console.log(sum);
 
 const val = getNotes();
 console.log(val);
-console.log(validator.isEmail("gmail.com"));
-console.log(validator.isURL("https://youtube.com"));
+
+console.log(chalk.green("Success!"));
