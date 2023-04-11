@@ -1,4 +1,5 @@
 const chalk = require("chalk");
+
 const add = require("./utils");
 const getNotes = require("./notes");
 
