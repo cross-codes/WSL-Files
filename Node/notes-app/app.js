@@ -40,4 +40,5 @@ yargs.command({
     console.log("Reading a note");
   },
 });
+
 console.log(yargs.argv);
