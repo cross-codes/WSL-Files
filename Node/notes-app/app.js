@@ -9,7 +9,7 @@ yargs.version("1.1.0");
 yargs.command({
   command: "add",
   describe: "Add a new note",
-  handler: function () {
+  handler: function() {
     console.log("Adding a new note!");
   },
 });
@@ -18,7 +18,7 @@ yargs.command({
 yargs.command({
   command: "remove",
   describe: "Remove a note",
-  handler: function () {
+  handler: function() {
     console.log("Removing the note");
   },
 });
@@ -27,7 +27,7 @@ yargs.command({
 yargs.command({
   command: "list",
   describe: "List notes available",
-  handler: function () {
+  handler: function() {
     console.log("Listing available notes");
   },
 });
@@ -36,7 +36,7 @@ yargs.command({
 yargs.command({
   command: "read",
   describe: "Read a note",
-  handler: function () {
+  handler: function() {
     console.log("Reading a note");
   },
 });
