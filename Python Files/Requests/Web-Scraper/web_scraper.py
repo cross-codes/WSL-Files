@@ -1,4 +1,4 @@
-# web_scraper.py
+# web_scraper.py 
 
 '''
 Link for documentation on Selenium: https://selenium-python.readthedocs.io/locating-elements.html
