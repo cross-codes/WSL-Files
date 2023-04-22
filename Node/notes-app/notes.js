@@ -1,17 +1,28 @@
 const fs = require("fs");
 const chalk = require("chalk");
 
-const getNotes = function() {
-  return "Your notes...";
+const loadNotes = () => {
+  try {
+    const dataBuffer = fs.readFileSync("notes.json");
+    const dataJSON = dataBuffer.toString();
+    return JSON.parse(dataJSON);
+  } catch (error) {
+    return [];
+  }
 };
 
-const addNote = function(title, body) {
+const listNotes = () => {
   const notes = loadNotes();
-  const duplicateNotes = notes.filter(function(note) {
-    return note.title === title;
+  notes.forEach(element => {
+    console.log(element.title);
   });
+};
 
-  if (duplicateNotes.length === 0) {
+const addNote = (title, body) => {
+  const notes = loadNotes();
+  const duplicateNote = notes.find((note) => note.title === title);
+
+  if (!duplicateNote) {
     notes.push({
       title: title,
       body: body,
@@ -24,27 +35,15 @@ const addNote = function(title, body) {
   }
 };
 
-const loadNotes = function() {
-  try {
-    const dataBuffer = fs.readFileSync("notes.json");
-    const dataJSON = dataBuffer.toString();
-    return JSON.parse(dataJSON);
-  } catch (error) {
-    return [];
-  }
-};
-
-const saveNotes = function(notes) {
+const saveNotes = (notes) => {
   const dataJSON = JSON.stringify(notes);
   fs.writeFileSync("notes.json", dataJSON);
 };
 
-const removeNote = function(title) {
+const removeNote = (title) => {
   const notes = loadNotes();
 
-  const exist = notes.filter(function(note) {
-    return note.title !== title;
-  });
+  const exist = notes.filter((note) => note.title !== title);
 
   if (notes.length - exist.length > 0) {
     saveNotes(exist);
@@ -54,8 +53,21 @@ const removeNote = function(title) {
   }
 };
 
+const readNotes = (title) => {
+  const notes = loadNotes();
+  const find = notes.find((note) => note.title === title);
+
+  if (!find) {
+    console.log(chalk.bgRed("No note found with given title"));
+  } else {
+    console.log("         " + chalk.underline(find.title));
+    console.log(find.body);
+  }
+};
+
 module.exports = {
-  getNotes: getNotes,
+  listNotes: listNotes,
   addNote: addNote,
   removeNote: removeNote,
+  readNotes: readNotes,
 };
