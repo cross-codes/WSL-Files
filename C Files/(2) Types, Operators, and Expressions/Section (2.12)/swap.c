@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main() {
-  int a = 12;
+  int a = 210;
   int b = 23;
 
   a = a ^ b;
