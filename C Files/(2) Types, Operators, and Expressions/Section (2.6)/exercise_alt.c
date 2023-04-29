@@ -1,12 +1,11 @@
 #include <stdio.h>
 
-int main()
-{
+int main() {
   char s[100];
   int i, c;
   int lim = 10;
 
-  enum loop {NO, YES};
+  enum loop { NO, YES };
   enum loop okloop = YES;
 
   i = 0;
@@ -16,11 +15,11 @@ int main()
     else if ((c = getchar()) == '\n')
       okloop = NO;
     else if (c == EOF)
-        okloop = NO;
+      okloop = NO;
     else {
       s[i] = c;
       ++i;
     }
-  
+
   return 0;
 }
