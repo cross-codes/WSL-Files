@@ -4,7 +4,6 @@
 
 int main() {
   int rows, curr, num, minnum, maxnum, spc_count, spc;
-
   printf("Enter the number of rows: ");
   scanf("%d", &rows);
 
