@@ -11,20 +11,30 @@ def login():
     global isUPI
     check_login = True
     while check_login:
-        admin_check = int(input(("Would you like to login as a customer (1) or an administrator (2)?: ")))
+        admin_check = int(
+            input(
+                ("Would you like to login as a customer (1) or an administrator (2)?: ")
+            )
+        )
         if admin_check == 1:
             id = str(input("Enter your BITS ID: "))
             name = str(input("Enter your name: "))
             check_SWD = True
             while check_SWD:
-                SWD_check = str(input(f"Hello {name}, would you like to pay with your SWD account? (Y/N): "))
+                SWD_check = str(
+                    input(
+                        f"Hello {name}, would you like to pay with your SWD account? (Y/N): "
+                    )
+                )
                 if SWD_check.upper() == "Y":
                     room_number = str(input("Enter your hostel number: "))
                     return ["SWD", id, name, room_number]
                 elif SWD_check.upper() == "N":
                     payment_check = True
                     while payment_check:
-                        payment_method = int(input("Would you like to pay using UPI (1) or Cash (2)?: "))
+                        payment_method = int(
+                            input("Would you like to pay using UPI (1) or Cash (2)?: ")
+                        )
                         if payment_method == 1:
                             isUPI = True
                             return ["no_SWD", id, name]
@@ -32,22 +42,26 @@ def login():
                             isUPI = False
                             return ["no_SWD", id, name]
                         else:
-                            print ("Invalid input. Try again.\n")
+                            print("Invalid input. Try again.\n")
                             payment_check = True
                 else:
-                    print ("Invalid input. Try again.\n")
+                    print("Invalid input. Try again.\n")
                     check_SWD = True
         elif admin_check == 2:
             username = str(input("Enter the administrator username: "))
             pwd = getpass.getpass("Enter the password (hidden for privacy): ")
-            if username == admin_credentials.admin_username and pwd == admin_credentials.admin_password:
+            if (
+                username == admin_credentials.admin_username
+                and pwd == admin_credentials.admin_password
+            ):
                 return "admin"
             else:
-                print ("Incorrect credentials entered")
+                print("Incorrect credentials entered")
                 return 0
         else:
-            print ("Invalid input. Try again.\n")
+            print("Invalid input. Try again.\n")
             admin_check = True
+
 
 def admin_views(market_obj):
     table = PrettyTable(
@@ -67,6 +81,7 @@ def admin_views(market_obj):
             print(item)
             table.add_row(Item.return_lst(item))
     return table
+
 
 def setup_data_for_testing(market_obj):
     discount = 0
@@ -115,9 +130,25 @@ def setup_data_for_testing(market_obj):
 
     i1_s = Item("Ruled 200 pages diary", "Stationery", 250, 270, 270, True, "S1")
     i2_s = Item("ITC - 100 pages ruled notebook", "Stationery", 70, 75, 75, True, "S2")
-    i3_s = Item("Reynolds - Ball point pen (pack of 10)","Stationery",100, 100, 100, True, "S3")
+    i3_s = Item(
+        "Reynolds - Ball point pen (pack of 10)",
+        "Stationery",
+        100,
+        100,
+        100,
+        True,
+        "S3",
+    )
     i4_s = Item("DOMS - 15cm scale", "Stationery", 5, 5, 5, True, "S4")
-    i5_s = Item("Casio - 991ES Plus Scientific calculator","Stationery",800,900,900,True,"S5",)
+    i5_s = Item(
+        "Casio - 991ES Plus Scientific calculator",
+        "Stationery",
+        800,
+        900,
+        900,
+        True,
+        "S5",
+    )
     stationery = [i1_s, i2_s, i3_s, i4_s, i5_s]
     for y in range(0, len(stationery), 1):
         cur_item = stationery[y]
@@ -128,7 +159,9 @@ def setup_data_for_testing(market_obj):
     i1_c = Item("USPA - Polo T Shirt", "Clothes", 450, 500, 500, True, "C1")
     i2_c = Item("Umbro - Pullover", "Clothes", 1000, 1200, 1200, True, "C2")
     i3_c = Item("Hush Puppies - Sandals", "Clothes", 350, 400, 400, True, "C3")
-    i4_c = Item("Jockey - Pack of 5 Men's underwear", "Clothes", 700, 750, 750, True, "C4")
+    i4_c = Item(
+        "Jockey - Pack of 5 Men's underwear", "Clothes", 700, 750, 750, True, "C4"
+    )
     i5_c = Item("Levis - Cargo pant", "Clothes", 1200, 1300, 1300, True, "C5")
     clothes = [i1_c, i2_c, i3_c, i4_c, i5_c]
     for z in range(0, len(clothes), 1):

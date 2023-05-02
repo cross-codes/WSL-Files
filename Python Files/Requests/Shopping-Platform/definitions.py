@@ -103,7 +103,7 @@ class Market:
         return False
 
     def all_items(self):
-        return (self.__available_items.values())
+        return self.__available_items.values()
 
 
 class GeneralCustomer:

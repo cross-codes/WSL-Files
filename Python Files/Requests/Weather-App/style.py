@@ -10,5 +10,6 @@ WHITE = "\033[37m"
 REVERSE = "\033[;7m"
 RESET = "\033[0m"
 
+
 def change_colour(colour):
-    return (colour)
+    return colour

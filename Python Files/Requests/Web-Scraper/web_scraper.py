@@ -1,8 +1,8 @@
-# web_scraper.py 
+# web_scraper.py
 
-'''
+"""
 Link for documentation on Selenium: https://selenium-python.readthedocs.io/locating-elements.html
-'''
+"""
 
 import os
 from selenium import webdriver
@@ -11,7 +11,9 @@ import csv
 from prettytable import PrettyTable
 
 # The link below is currently broken, working on a fix at the moment
-driver = webdriver.Chrome("/home/akshaj/Programming/Python Files/Requests/Web-Scraper/chromedriver")
+driver = webdriver.Chrome(
+    "/home/akshaj/Programming/Python Files/Requests/Web-Scraper/chromedriver"
+)
 
 BASE_URL = "https://www.myntra.com/shoes?p="
 
@@ -27,7 +29,7 @@ for x in range(1, 5):
 
     for shoe in resultset:
         try:
-            split_data = shoe.text.split('\n')
+            split_data = shoe.text.split("\n")
             rating = split_data[0]
             shoe_name = split_data[3] + " - " + split_data[4]
         except:
@@ -40,7 +42,9 @@ for x in range(1, 5):
     print("Skipped", skip_count, "entries due to missing information.")
 
 # There is no true "category" of shoes within the pages itself, so we use a default category of "sneakers".
-file = open("sneakers.csv", "w", newline="")  # Note: "sneakers.csv" will be made in the current directory
+file = open(
+    "sneakers.csv", "w", newline=""
+)  # Note: "sneakers.csv" will be made in the current directory
 writer_object = csv.writer(file)
 
 column_1 = ["Sneaker_Name"] + list(sneaker_params.keys())
@@ -63,7 +67,12 @@ for y in range(0, len(column_1), 1):
         summary_table.add_row(temp_row)
 
 
-print ("\nThe file has been succesfully created in", os.getcwd(), "\b. A summary of the contents of the file is as shown below:\n", summary_table)
+print(
+    "\nThe file has been succesfully created in",
+    os.getcwd(),
+    "\b. A summary of the contents of the file is as shown below:\n",
+    summary_table,
+)
 
 file.flush()
 file.close()
