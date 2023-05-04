@@ -1,25 +1,14 @@
 #include <stdio.h>
 
-void test() {
-  int c;
-  printf("c: %d\n", c);
-}
-
 int main() {
-  int a;
-  char var = 10;
-  printf("%d\n", var);
-  static int i = 0;
+  int x = 1, y = x;
 
-  {
-    int b;
-    printf("b: %d\n", b);
+  switch(--y || x++ -1) {
+    case 1: printf("Good");
+    default: printf("Day");
+    case -1: printf("Night");
   }
+  printf("\n x = %d, y = %d", x, y);
 
-  printf("a: %d\n", a);
-  test();
   return 0;
-
-  a++;
-  printf("%d\n", a);
 }
