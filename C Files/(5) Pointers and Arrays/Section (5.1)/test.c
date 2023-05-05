@@ -9,4 +9,7 @@ int main() {
   printf("%d, %d\n", ip, *ip);
   y = *ip;
   printf("%d\n", y);
+  ip = &v[1];
+  v[0] = 2;
+  printf("%d\n", *ip);
 }
