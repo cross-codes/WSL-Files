@@ -1,4 +1,4 @@
-const api = require("./.secrets.js");
+const api = require("./.env");
 const request = require("request");
 
 const _API_KEY = api.apikey;
@@ -6,7 +6,7 @@ const url_w =
   "http://api.openweathermap.org/data/2.5/weather?lat=51.509865&lon=-0.118092&units=metric&type=accurate&appid="
   + _API_KEY;
 
-const url_g = "http://api.openweathermap.org/geo/1.0/direct?q=Delhi&limit=1&appid=" + _API_KEY;
+const url_g = "http://api.openweathermap.org/geo/1.0/direct?q=London&limit=1&appid=" + _API_KEY;
 
 request({ url: url_w, json: true }, (error, response) => {
   if (error) {
