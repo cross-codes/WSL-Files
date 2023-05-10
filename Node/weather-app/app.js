@@ -10,12 +10,10 @@ if (!location) {
     if (error_g) {
       return console.log(error_g);
     }
-
     forecast.forecast(data_g.latitude, data_g.longitude, (error_w, data_w) => {
       if (error_w) {
         return console.log(error_w);
       }
-
       console.log("Location: " + data_g.location);
       console.log(
         "Description: " + data_w.description + ", Temperature: " + data_w.temperature + ", Humidity: "
