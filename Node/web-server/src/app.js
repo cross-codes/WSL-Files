@@ -1,21 +1,38 @@
+const path = require("path");
 const express = require("express");
+
+// NOTE: The website is on http://localhost:3000/
 
 const app = express();
 
-app.get("", (req, res) => {
-  res.send("Hello Express");
-});
+app.set("view engine", "hbs");
+app.use(express.static(path.join(__dirname, "../public")));
 
-app.get("/help", (req, res) => {
-  res.send("Help page");
+app.get("", (req, res) => {
+  res.render("index", {
+    title: "Weather App",
+    name: "Akshaj Rao",
+  });
 });
 
 app.get("/about", (req, res) => {
-  res.send("About page");
+  res.render("about", {
+    title: "About Me",
+    name: "Akshaj Rao",
+  });
+});
+
+app.get("/help", (req, res) => {
+  res.render("help", {
+    message: "What a noob",
+  });
 });
 
 app.get("/weather", (req, res) => {
-  res.send("Weather watch");
+  res.send({
+    weather: "weather",
+    location: "location",
+  });
 });
 
 app.listen(3000, () => {
