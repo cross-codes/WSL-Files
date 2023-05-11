@@ -9,16 +9,16 @@ const forecast = (latitude, longitude, callback) => {
     + "&units=metric&type=accurate&appid="
     + _API_KEY;
 
-  request({ url: url, json: true }, (error, response) => {
+  request({ url: url, json: true }, (error, { body }) => {
     if (error) {
       callback("Unable to connect to the weather service!", undefined);
-    } else if (response.body.message) {
+    } else if (body.message) {
       callback("Unable to find given location", undefined);
     } else {
       callback(undefined, {
-        description: response.body.weather[0].description,
-        temperature: response.body.main.temp,
-        humidity: response.body.main.humidity,
+        description: body.weather[0].description,
+        temperature: body.main.temp,
+        humidity: body.main.humidity,
       });
     }
   });
