@@ -37,10 +37,26 @@ app.get("/help", (req, res) => {
   });
 });
 
+app.get("/help/*", (req, res) => {
+  res.render("404", {
+    error: "The requested help page was not found",
+    header: "Error 404",
+    name: "Akshaj Rao",
+  });
+});
+
 app.get("/weather", (req, res) => {
   res.send({
     weather: "weather",
     location: "location",
+  });
+});
+
+app.get("*", (req, res) => {
+  res.render("404", {
+    header: "Error 404",
+    error: "The requested page was not found",
+    name: "Akshaj Rao",
   });
 });
 
