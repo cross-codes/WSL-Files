@@ -1,6 +1,8 @@
 const path = require("path");
 const express = require("express");
 const hbs = require("hbs");
+const forecast = require("./utils/forecast");
+const geocode = require("./utils/geocode");
 
 // NOTE: The website is on http://localhost:3000/
 
@@ -46,9 +48,43 @@ app.get("/help/*", (req, res) => {
 });
 
 app.get("/weather", (req, res) => {
+  if (!req.query.address) {
+    return res.send({
+      error: "You must provide a valid address",
+    });
+  } else {
+    geocode.geocode(req.query.address, (error_g, { location, latitude, longitude } = {}) => {
+      if (error_g) {
+        return res.send({
+          error: error_g,
+        });
+      }
+      forecast.forecast(latitude, longitude, (error_w, { description, temperature, humidity } = {}) => {
+        if (error_w) {
+          return res.send({
+            error: error_w,
+          });
+        }
+        return res.send({
+          location: location,
+          description: description,
+          temeperature: temperature,
+          humdity: humidity,
+        });
+      });
+    });
+  }
+});
+
+app.get("/products", (req, res) => {
+  if (!req.query.search) {
+    return res.send({
+      error: "You must provide a search term",
+    });
+  }
+  console.log(req.query);
   res.send({
-    weather: "weather",
-    location: "location",
+    products: [],
   });
 });
 
