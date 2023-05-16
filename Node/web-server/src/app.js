@@ -68,8 +68,8 @@ app.get("/weather", (req, res) => {
         return res.send({
           location: location,
           description: description,
-          temeperature: temperature,
-          humdity: humidity,
+          temperature: temperature,
+          humidity: humidity,
         });
       });
     });
