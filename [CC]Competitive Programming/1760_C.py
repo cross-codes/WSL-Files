@@ -1,4 +1,5 @@
 import copy
+
 strength = []
 max = 0
 
@@ -26,7 +27,7 @@ def display(lst):
 
 a = int(input())
 d = int(input())
-while (a > 0):
+while a > 0:
     b = input()
     if len(b) > 1:
         a -= 1
