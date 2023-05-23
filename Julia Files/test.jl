@@ -1,5 +1,12 @@
-# This is Julia code; it will not run in MATLAB or Python.
 using Plots, StatsBase, MAT
+
+# Define the custom mean function
+function custom_mean(arr)
+    return sum(arr) / length(arr)
+end
+
+# Define the EEG signal (eeg) and other required variables
+eeg = [1, 2, 3, 4, 5]  # Replace with your actual EEG data
 
 function crosscorr(x, y)
     lx, rxx, lags = length(x), AbstractFloat[], Integer[]
@@ -7,7 +14,7 @@ function crosscorr(x, y)
     lags_ranges = [(k - lx, k:k+lx-1) for k = 1:2*lx-1]
 
     foreach(lags_ranges) do (lag, range)
-        push!(rxx, mean(x[range] .* y))
+        push!(rxx, custom_mean(x[range] .* y))  # Use custom_mean instead of mean
         push!(lags, lag)
     end
     return rxx, lags
@@ -29,3 +36,4 @@ xlabel = "Reference Signal Frequency (Hz)"
 ylabel = "Max correlation"
 plot(freqs, max_corr, label="Manual", xlabel=xlabel, ylabel=ylabel)
 plot!(freqs, max_corr_M, markershape=:circle, ls=:dot, label="StatsBase")
+savefig("output.png")
