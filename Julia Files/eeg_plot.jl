@@ -20,9 +20,9 @@ function crosscorr(x, y)
 end
 
 N, fs = length(eeg), 50  # Length, sampling frequency of data
-t = (0:N-1) / fs           # Time vector from 0 (approx.) to 2 sec.
+t = (0:N-1) / fs  # Time vector from 0 (approx.) to 2 sec.
 freqs = 1:0.5:25
-refs = [cos.(2π .* f .* t) for f = freqs]       # Reference signals
+refs = [cos.(2π .* f .* t) for f = freqs]  # Reference signals
 result = zip(refs, map(x -> crosscorr(eeg, x), refs))
 
 max_corr, max_corr_M = [], []
