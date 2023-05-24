@@ -1,12 +1,11 @@
 using Plots, StatsBase, MAT
 
-# Define the custom mean function
-function custom_mean(arr)
+function mean(arr)
     return sum(arr) / length(arr)
 end
 
 # Define the EEG signal (eeg) and other required variables
-eeg = [1, 2, 3, 4, 5]  # Replace with your actual EEG data
+eeg = [1, 2, 3, 4, 5]
 
 function crosscorr(x, y)
     lx, rxx, lags = length(x), AbstractFloat[], Integer[]
@@ -14,7 +13,7 @@ function crosscorr(x, y)
     lags_ranges = [(k - lx, k:k+lx-1) for k = 1:2*lx-1]
 
     foreach(lags_ranges) do (lag, range)
-        push!(rxx, custom_mean(x[range] .* y))  # Use custom_mean instead of mean
+        push!(rxx, mean(x[range] .* y))
         push!(lags, lag)
     end
     return rxx, lags

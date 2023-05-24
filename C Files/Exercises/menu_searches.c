@@ -162,12 +162,12 @@ int binarySearch(int v[], int e, int l) {
     return -1;
 }
 
-void selectionSortDec(int v[], int length) {
+void selectionSortDec(int a[], int length) {
   for (int i = 0; i < length; i++) {
-    int index = find_max(v, i, length);
-    int temp = v[i];
-    v[i] = v[index];
-    v[index] = temp;
+    int index = find_max(a, i, length);
+    int temp = a[i];
+    a[i] = a[index];
+    a[index] = temp;
   }
 }
 
