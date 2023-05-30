@@ -11,5 +11,4 @@ int maximizeSum(int *nums, int numsSize, int k) {
   register int ans = nums[numsSize - 1] * k + (k - 1) * k / 2;
 
   return ans;
-  ;
 }
