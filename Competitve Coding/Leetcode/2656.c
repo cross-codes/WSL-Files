@@ -1,6 +1,6 @@
 int maximizeSum(int *nums, int numsSize, int k) {
-  int ans = 0;
-  int gap, i, j, temp;
+  register int ans = 0;
+  register int gap, i, j, temp;
 
   for (gap = numsSize / 2; gap > 0; gap /= 2)
     for (i = gap; i < numsSize; i++)
