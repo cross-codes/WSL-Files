@@ -5,11 +5,11 @@
 void shellsort(int list[], int length);
 
 int main() {
-  int nums[20] = {1, 4, 5, 7, 5, 7, 10, 12, 0};
+  int nums[5] = {-68, -96, -12, -40, 16};
   int i;
 
-  shellsort(nums, 9);
-  for (i = 0; i < 9; ++i)
+  shellsort(nums, 5);
+  for (i = 0; i < 5; ++i)
     printf("%d ", nums[i]);
   printf("\n");
 
