@@ -4,7 +4,7 @@
 #define OUT 0
 #define MAX_WORD_LENGTH 12
 
-main() {
+int main() {
   int c, i, lenw, state, j;
   int word_lengths[MAX_WORD_LENGTH];
 
@@ -15,13 +15,13 @@ main() {
     word_lengths[i] = 0;
 
   while ((c = getchar()) != EOF) {
-    if (state = IN)
+    if (state == IN)
       lenw++;
     if (c == ' ' || c == '\n' || c == '\t' || c == '\r') {
       state = OUT;
       ++word_lengths[lenw - 1];
       lenw = 0;
-    } else if (state = OUT) {
+    } else if (state == OUT) {
       state = IN;
     }
   }
