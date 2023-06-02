@@ -13,5 +13,6 @@ int main() {
   };
 
   printf("%p\n", keytab[0].word);
+  printf("This was arrays.c\n");
   return 0;
 }
