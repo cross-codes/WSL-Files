@@ -35,12 +35,4 @@ int main() {
 
     cout << chose << endl;
   }
-
-  // string s = "tleelte";
-  // for(int i=0;i<=n-a;i++){
-  // 	for(int j=i;j<i+a;j++){
-  // 		cout << s[j];
-  // 	}
-  // 	cout << "" << endl;
-  // }
 }
