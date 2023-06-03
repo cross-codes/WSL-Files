@@ -21,4 +21,20 @@ MongoClient.connect(connectionURL, { useNewUrlParser: true }, (error, client) =>
 
     console.log(user);
   });
+
+  db.collection("users").find({ age: 30 }).toArray((error, users) => {
+    if (error) {
+      return console.log("Unable to connect to database");
+    }
+
+    console.log(users);
+  });
+
+  db.collection("users").find({ age: 30 }).count((error, users) => {
+    if (error) {
+      return console.log("Unable to connect to database");
+    }
+
+    console.log(users);
+  });
 });
