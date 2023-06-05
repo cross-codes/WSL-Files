@@ -7,7 +7,7 @@ float convert(int fahr) {
   return celsius;
 }
 
-main() {
+int main() {
   int fahr;
   int lower, upper, step;
 
