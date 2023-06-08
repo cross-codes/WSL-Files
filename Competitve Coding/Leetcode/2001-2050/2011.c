@@ -7,13 +7,11 @@ int finalValueAfterOperations(char **operations, int operationsSize) {
   char *decrement2 = "X--";
 
   for (int i = 0; i < operationsSize; i++) {
-    if (strcmp(increment, operations[i]) == 0)
+    if ((strcmp(increment, operations[i]) == 0) ||
+        (strcmp(increment2, operations[i]) == 0))
       ans++;
-    else if (strcmp(increment2, operations[i]) == 0)
-      ans++;
-    else if (strcmp(decrement, operations[i]) == 0)
-      ans--;
-    else if (strcmp(decrement2, operations[i]) == 0)
+    else if ((strcmp(decrement, operations[i]) == 0) ||
+             (strcmp(decrement2, operations[i]) == 0))
       ans--;
   }
 
