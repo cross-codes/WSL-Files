@@ -28,7 +28,7 @@ int main() {
     float salary;
     char *division;
 
-    division = malloc(25 * sizeof(char));
+    division = (char *)malloc(25 * sizeof(char));
     printf("Enter the ID: ");
     scanf("%d", &ID);
     printf("Enter the salary: ");
