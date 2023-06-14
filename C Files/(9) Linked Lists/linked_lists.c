@@ -80,8 +80,7 @@ void insert_node_at_end(struct node *node_ptr, struct linked_list *lst_ptr) {
   }
 }
 
-// Insert a node after the first occurence of a node with an element matching
-// the passed element
+// Insert a node after the first occurence of a node with an element
 // Accepts the search element, and pointers to the node to be inserted and to
 // the linked list itself
 void insert_after(int element, struct node *node_ptr,
