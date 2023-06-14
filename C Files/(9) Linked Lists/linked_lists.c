@@ -143,8 +143,9 @@ void remove_first_node(struct linked_list *lst_ptr) {
     printf("Current linked list is empty\n");
   else {
     struct node *temp_ptr = lst_ptr->head_ptr;
-    lst_ptr->head_ptr = temp_ptr->next_node_ptr;
-    free(temp_ptr);
+    lst_ptr->head_ptr =
+        temp_ptr->next_node_ptr; // Make the head point to the second node
+    free(temp_ptr);              // Remove the temporary pointer
     lst_ptr->count--;
   }
   return;
