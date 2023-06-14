@@ -138,7 +138,18 @@ void insert_after(int element, struct node *node_ptr,
   return;
 }
 
-void remove_first_node(struct linked_list *list);
+void remove_first_node(struct linked_list *lst_ptr) {
+  if (lst_ptr->count == 0)
+    printf("Current linked list is empty\n");
+  else {
+    struct node *temp_ptr = lst_ptr->head_ptr;
+    lst_ptr->head_ptr = temp_ptr->next_node_ptr;
+    free(temp_ptr);
+    lst_ptr->count--;
+  }
+  return;
+}
+
 void remove_last_node(struct linked_list *list);
 
 int main() { return 0; }
