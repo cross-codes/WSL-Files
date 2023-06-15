@@ -114,6 +114,8 @@ void insert_after(int element, struct node *node_ptr,
   lst_ptr->count++;
 }
 
+// Remove the first node in a linked list
+// Accepts a pointer to the linked list
 void remove_first_node(struct linked_list *lst_ptr) {
   if (lst_ptr->count == 0)
     printf("Current linked list is empty\n");
@@ -127,6 +129,49 @@ void remove_first_node(struct linked_list *lst_ptr) {
   return;
 }
 
-void remove_last_node(struct linked_list *list);
+// Remove the last node in a linked list
+// Accepts a pointer to a linked list
+void remove_last_node(struct linked_list *lst_ptr) {
+  // Condition: If the linked list is empty
+  if (lst_ptr->count == 0) {
+    printf("The linked list is empty\n");
+    return;
+  } // Condition: If the linked list has only one node
+  else if (lst_ptr->count == 1) {
+    lst_ptr->count--;
+    free(lst_ptr->head_ptr);  // Free the last node
+    lst_ptr->head_ptr = NULL; // Set the head pointer to null
+    return;
+  }
+  struct node *temp_ptr = lst_ptr->head_ptr;
+  struct node *prev_node_ptr = temp_ptr;
+
+  while ((temp_ptr->next_node_ptr) != NULL) {
+    prev_node_ptr = temp_ptr;
+    temp_ptr = temp_ptr->next_node_ptr;
+  }
+
+  prev_node_ptr->next_node_ptr = NULL;
+  lst_ptr->count--;
+  free(temp_ptr);
+}
+
+// Return a pointer to the first node that has a matching element
+// Accepts the element itself, and a pointer to the linked list
+struct node *search(int data, struct linked_list *lst_ptr) {
+  // Condition: If the linked list is empty
+  if (lst_ptr->count == 0) {
+    printf("The linked list is empty\n");
+    return NULL;
+  }
+
+  struct node *temp_ptr = lst_ptr->head_ptr;
+  while (temp_ptr->next_node_ptr != NULL && temp_ptr->element != data)
+    temp_ptr = temp_ptr->next_node_ptr;
+  struct node *ret_ptr = (struct node *)malloc(sizeof(struct node *));
+  ret_ptr = temp_ptr;
+
+  return ret_ptr;
+}
 
 int main() { return 0; }
