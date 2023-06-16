@@ -160,9 +160,9 @@ void remove_last_node(struct linked_list *lst_ptr) {
   free(temp_ptr); // Free the original last node
 }
 
-// ╭──────────────────────╮
-// │Additional functions  │
-// ╰──────────────────────╯
+// ╭────────────────────╮
+// │Additional functions│
+// ╰────────────────────╯
 
 // Return a pointer to the first node that has a matching element
 // Accepts the element itself, and a pointer to the linked list
