@@ -168,10 +168,8 @@ struct node *search(int data, struct linked_list *lst_ptr) {
   struct node *temp_ptr = lst_ptr->head_ptr;
   while (temp_ptr->next_node_ptr != NULL && temp_ptr->element != data)
     temp_ptr = temp_ptr->next_node_ptr;
-  struct node *ret_ptr = (struct node *)malloc(sizeof(struct node *));
-  ret_ptr = temp_ptr;
 
-  return ret_ptr;
+  return temp_ptr;
 }
 
 int main() { return 0; }
