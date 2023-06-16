@@ -143,18 +143,26 @@ void remove_last_node(struct linked_list *lst_ptr) {
     lst_ptr->head_ptr = NULL; // Set the head pointer to null
     return;
   }
-  struct node *temp_ptr = lst_ptr->head_ptr;
-  struct node *prev_node_ptr = temp_ptr;
+  struct node *temp_ptr =
+      lst_ptr->head_ptr; // Define a temporary pointer to the first node
+  struct node *prev_node_ptr = temp_ptr; // Define a new pointer eventually
+                                         // points to the last but one node
 
-  while ((temp_ptr->next_node_ptr) != NULL) {
+  while ((temp_ptr->next_node_ptr) !=
+         NULL) { // Traverse till the last node is reached
     prev_node_ptr = temp_ptr;
     temp_ptr = temp_ptr->next_node_ptr;
   }
 
-  prev_node_ptr->next_node_ptr = NULL;
+  prev_node_ptr->next_node_ptr = NULL; // The last but one node should now point
+                                       // to NULL as it becomes the last node
   lst_ptr->count--;
-  free(temp_ptr);
+  free(temp_ptr); // Free the original last node
 }
+
+// ╭──────────────────────╮
+// │Additional functions  │
+// ╰──────────────────────╯
 
 // Return a pointer to the first node that has a matching element
 // Accepts the element itself, and a pointer to the linked list
@@ -166,10 +174,56 @@ struct node *search(int data, struct linked_list *lst_ptr) {
   }
 
   struct node *temp_ptr = lst_ptr->head_ptr;
-  while (temp_ptr->next_node_ptr != NULL && temp_ptr->element != data)
+  while (temp_ptr->next_node_ptr != NULL &&
+         temp_ptr->element != data) // Traverse till the matching node is found
     temp_ptr = temp_ptr->next_node_ptr;
 
   return temp_ptr;
+}
+
+// Print all the elements in the nodes of the linked list
+// Accepts a pointer to the linked list
+void print_list(struct linked_list *lst_ptr) {
+  struct node *temp_ptr =
+      lst_ptr->head_ptr; // Define a temporary pointer to the first node
+
+  while (temp_ptr->next_node_ptr !=
+         NULL) {                        // Iterate till the last node is reached
+    printf("%d, ", temp_ptr->element);  // Print out the elements
+    temp_ptr = temp_ptr->next_node_ptr; // Move to the next pointer
+  }
+
+  printf("\n");
+}
+
+// Remove the node with the corresponding matching element
+// Accepts the element to match and pointer to the linked list
+void remove_after(int data, struct linked_list *lst_ptr) {
+  // Condtion: The linked list is empty
+  if (lst_ptr->count == 0) {
+    printf("The linked list is empty");
+    return;
+  }
+
+  struct node *temp_ptr = lst_ptr->head_ptr;
+  struct node *prev_ptr = temp_ptr;
+
+  while (temp_ptr->element != data && temp_ptr->next_node_ptr != NULL) {
+    prev_ptr = temp_ptr;
+    temp_ptr = temp_ptr->next_node_ptr;
+  }
+
+  if (temp_ptr->next_node_ptr ==
+      NULL) { // If the loop terminated without finding a match
+    printf("No match was found\n");
+    return;
+  }
+
+  prev_ptr->next_node_ptr =
+      temp_ptr->next_node_ptr; // Set the last but one node to point to the node
+                               // after the matching node
+  free(temp_ptr);              // Delete the matching node
+  lst_ptr->count--;
 }
 
 int main() { return 0; }
