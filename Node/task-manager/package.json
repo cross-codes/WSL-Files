@@ -13,5 +13,6 @@
     "mongodb": "^4.16.0",
     "mongoose": "^5.3.16",
     "validator": "^13.9.0"
-  }
+  },
+  "type": "module"
 }
