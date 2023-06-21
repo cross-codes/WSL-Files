@@ -90,4 +90,46 @@ void insert_node_at_end(struct dll *lst_ptr, struct dllnode *node_ptr) {
   node_ptr->nnp = NULL;
 }
 
+// Function that inserts a node after the first node with a matching element
+void insert_after(struct dll *lst_ptr, struct dllnode *node_ptr, int value) {
+  // Condition: List is empty
+  if (lst_ptr->count == 0) {
+    printf("The list is empty\n");
+    return;
+  } // Condition: List is nonempty
+  struct dllnode *temp_ptr = lst_ptr->head_ptr;
+  while (temp_ptr->element != value && temp_ptr->nnp != NULL)
+    temp_ptr = temp_ptr->nnp;
+  // Condition: No matching element is found
+  if (temp_ptr->nnp == NULL) {
+    printf("Matching element is not found\n");
+    return;
+  } // Condition: A matching element was found
+  // temp_ptr now points to the matching node
+
+  // prev_node matching_node <new_node>  next_node
+  //            (temp_ptr)   (node_ptr)  (next_ptr)
+  // New node to be placed inside <>
+
+  struct dllnode *next_ptr = temp_ptr->nnp; // The next node
+  temp_ptr->nnp = node_ptr;                 // temp_ptr->nnp to the new node
+  node_ptr->pnp = temp_ptr; // new_node pnp points to matching node
+  node_ptr->nnp = next_ptr; // new_node nnp points to next_node
+  next_ptr->pnp = node_ptr; // next_ptr->pnp to the new node
+  lst_ptr->count++;
+}
+
+// // Function that removes the last node from a list
+// void remove_last_node(struct dll *lst_ptr) {
+//   // Condition: List is empty
+//   if (lst_ptr->count == 0) {
+//     printf("The list is empty\n");
+//     return;
+//   } // Condition: List is nonempty
+//   struct dllnode *temp_ptr = lst_ptr->head_ptr;
+//
+//   while (temp_ptr->nnp != NULL)
+//     temp_ptr = temp_ptr->nnp;
+// }
+
 int main() { return 0; }
