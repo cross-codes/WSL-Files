@@ -42,6 +42,7 @@ int is_circular_1(struct linked_list *lst_ptr) {
     }
     addr[addr_count] = temp_ptr;
     addr_count++;
+    temp_ptr = temp_ptr->next_node_pointer;
   }
   return found;
 }
