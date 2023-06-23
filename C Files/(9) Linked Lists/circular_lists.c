@@ -23,7 +23,7 @@ struct linked_list {
   struct node *head_ptr;
 };
 
-// NOTE: If a linked list is not circular, it must necessarily be linear
+// NOTE: If a linked list is not ciruclar, it must necessarily be linear
 // and must hence have a node pointing to NULL
 // The functions below are thus exhaustive
 
@@ -37,7 +37,7 @@ int is_circular_1(struct linked_list *lst_ptr) {
     for (int j = 0; j < addr_count; j++) {
       if (temp_ptr == addr[j]) {
         found = true;
-        break;
+        return found;
       }
     }
     addr[addr_count] = temp_ptr;
@@ -55,11 +55,38 @@ int is_circular_2(struct linked_list *lst_ptr) {
          fast_ptr->next_node_pointer != NULL) {
     slow_ptr = slow_ptr->next_node_pointer;
     fast_ptr = fast_ptr->next_node_pointer->next_node_pointer;
-    if (slow_ptr == fast_ptr)
+    if (slow_ptr == fast_ptr) {
       return true;
+    }
   }
 
   return false;
 }
 
-int main() { return 0; }
+int main() {
+  printf("Hello World\n");
+
+  struct linked_list *l1;
+  struct node *n1 = (struct node *)malloc(sizeof(struct node));
+  struct node *n2 = (struct node *)malloc(sizeof(struct node));
+  struct node *n3 = (struct node *)malloc(sizeof(struct node));
+  struct node *n4 = (struct node *)malloc(sizeof(struct node));
+  struct node *n5 = (struct node *)malloc(sizeof(struct node));
+  l1 = (struct linked_list *)malloc(sizeof(struct linked_list));
+  n1->element = 2;
+  n2->element = 2;
+  n3->element = 2;
+  n4->element = 2;
+  n5->element = 2;
+  l1->count = 5;
+  l1->head_ptr = n1;
+  n1->next_node_pointer = n2;
+  n2->next_node_pointer = n3;
+  n3->next_node_pointer = n4;
+  n4->next_node_pointer = n5;
+  n5->next_node_pointer = n1;
+
+  printf("Method 1 returns: %d\n", is_circular_2(l1));
+  printf("Method 2 returns: %d\n", is_circular_1(l1));
+  return 0;
+}
