@@ -23,7 +23,7 @@ struct linked_list {
   struct node *head_ptr;
 };
 
-// NOTE: If a linked list is not ciruclar, it must necessarily be linear
+// NOTE: If a linked list is not circular, it must necessarily be linear
 // and must hence have a node pointing to NULL
 // The functions below are thus exhaustive
 
@@ -55,9 +55,8 @@ int is_circular_2(struct linked_list *lst_ptr) {
          fast_ptr->next_node_pointer != NULL) {
     slow_ptr = slow_ptr->next_node_pointer;
     fast_ptr = fast_ptr->next_node_pointer->next_node_pointer;
-    if (slow_ptr == fast_ptr) {
+    if (slow_ptr == fast_ptr)
       return true;
-    }
   }
 
   return false;
