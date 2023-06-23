@@ -56,12 +56,11 @@ int is_circular_2(struct linked_list *lst_ptr) {
     slow_ptr = slow_ptr->next_node_pointer;
     fast_ptr = fast_ptr->next_node_pointer->next_node_pointer;
     if (slow_ptr == fast_ptr) {
-      found = true;
-      break;
+      return true;
     }
   }
 
-  return found;
+  return false;
 }
 
 int main() { return 0; }
