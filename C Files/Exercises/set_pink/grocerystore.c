@@ -1,5 +1,12 @@
 #include "grocerystore.h"
 
+int stringlen(char *str) {
+  int count;
+  for (count = 0; str[count] != '\0'; count++)
+    ;
+  return count;
+}
+
 struct item *readGroceryList(int count) {
   struct item *groceryList = (struct item *)malloc(sizeof(struct item) * count);
   int ID = 1;
@@ -10,8 +17,29 @@ struct item *readGroceryList(int count) {
     groceryList[i].ID = ID;
     printf("Name: ");
     scanf("%s", groceryList[i].name);
-    printf("Price: ");
-    scanf("%f", &groceryList[i].price);
+    char price_s[100];
+    float price;
+    int flag = -1;
+    int decim = 0;
+    while (flag != 0) {
+      int decim = -1;
+      int check = 0;
+      printf("Price: ");
+      scanf("%s", price_s);
+      for (int i = 0; i < stringlen(price_s); i++) {
+        if (price_s[i] == '.')
+          check = 1;
+        if (check)
+          decim++;
+      }
+      if (decim <= 2) {
+        flag = 0;
+        groceryList[i].price = atof(price_s);
+      } else {
+        flag = 1;
+        printf("Invalid input\n");
+      }
+    }
     printf("Quantity: ");
     scanf("%d", &groceryList[i].quantity);
     printf("\n");
