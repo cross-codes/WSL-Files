@@ -32,13 +32,33 @@ struct medicine *readMedicineList(int count) {
   int ID = 1;
   for (int i = 0; i < count; i++) {
     char name[MAXNAME];
+    char price_s[MAXNAME];
     float price;
     int quantity;
     printf("Enter details for medicine %d\n", ID);
     printf("Name: ");
     scanf("%s", name);
-    printf("Price: ");
-    scanf("%f", &price);
+    int flag = -1;
+    int decim = 0;
+    while (flag != 0) {
+      int decim = -1;
+      int check = false;
+      printf("Price: ");
+      scanf("%s", price_s);
+      for (int i = 0; i < strlen(price_s); i++) {
+        if (price_s[i] == '.')
+          check = true;
+        if (check)
+          decim++;
+      }
+      if (decim <= 2) {
+        flag = 0;
+        price = atof(price_s);
+      } else {
+        flag = 1;
+        printf("Invalid input\n");
+      }
+    }
     printf("Quantity: ");
     scanf("%d", &quantity);
     med_arr[i].ID = ID;
