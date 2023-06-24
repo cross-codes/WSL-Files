@@ -119,17 +119,30 @@ void insert_after(struct dll *lst_ptr, struct dllnode *node_ptr, int value) {
   lst_ptr->count++;
 }
 
-// // Function that removes the last node from a list
-// void remove_last_node(struct dll *lst_ptr) {
-//   // Condition: List is empty
-//   if (lst_ptr->count == 0) {
-//     printf("The list is empty\n");
-//     return;
-//   } // Condition: List is nonempty
-//   struct dllnode *temp_ptr = lst_ptr->head_ptr;
-//
-//   while (temp_ptr->nnp != NULL)
-//     temp_ptr = temp_ptr->nnp;
-// }
+// Function that removes the last node from a list
+void remove_last_node(struct dll *lst_ptr) {
+  // Condition: List is empty
+  if (lst_ptr->count == 0) {
+    printf("The list is empty\n");
+    return;
+  } // Condition: If there is only one node in the list
+  else if (lst_ptr->count == 1) {
+    lst_ptr->count--;
+    free(lst_ptr->head_ptr);
+    lst_ptr->head_ptr = NULL;
+    return;
+  } // Condition: List is nonempty
+  struct dllnode *temp_ptr = lst_ptr->head_ptr;
+  struct dllnode *prev_ptr = lst_ptr->head_ptr;
+
+  while (temp_ptr->nnp != NULL) {
+    prev_ptr = temp_ptr;
+    temp_ptr = temp_ptr->nnp;
+  }
+
+  prev_ptr->nnp = NULL;
+  free(temp_ptr);
+  lst_ptr->count--;
+}
 
 int main() { return 0; }

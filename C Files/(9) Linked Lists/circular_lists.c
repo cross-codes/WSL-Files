@@ -31,33 +31,27 @@ struct linked_list {
 int is_circular_1(struct linked_list *lst_ptr) {
   struct node *addr[MAXVAL];
   int addr_count = 0;
-  int found = false;
   struct node *temp_ptr = lst_ptr->head_ptr;
   while (temp_ptr != NULL) {
-    for (int j = 0; j < addr_count; j++) {
-      if (temp_ptr == addr[j]) {
-        found = true;
-        return found;
-      }
-    }
+    for (int j = 0; j < addr_count; j++)
+      if (temp_ptr == addr[j])
+        return true;
     addr[addr_count] = temp_ptr;
     addr_count++;
     temp_ptr = temp_ptr->next_node_pointer;
   }
-  return found;
+  return false;
 }
 
 // Method 2: Floyd's fast and slow pointer method
 int is_circular_2(struct linked_list *lst_ptr) {
   struct node *slow_ptr = lst_ptr->head_ptr, *fast_ptr = lst_ptr->head_ptr;
-  int found = false;
   while (slow_ptr != NULL && fast_ptr != NULL &&
          fast_ptr->next_node_pointer != NULL) {
     slow_ptr = slow_ptr->next_node_pointer;
     fast_ptr = fast_ptr->next_node_pointer->next_node_pointer;
-    if (slow_ptr == fast_ptr) {
+    if (slow_ptr == fast_ptr)
       return true;
-    }
   }
 
   return false;
@@ -86,7 +80,7 @@ int main() {
   n4->next_node_pointer = n5;
   n5->next_node_pointer = n1;
 
-  printf("Method 1 returns: %d\n", is_circular_2(l1));
-  printf("Method 2 returns: %d\n", is_circular_1(l1));
+  printf("Method 1 returns: %d\n", is_circular_1(l1));
+  printf("Method 2 returns: %d\n", is_circular_2(l1));
   return 0;
 }

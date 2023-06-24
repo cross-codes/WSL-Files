@@ -201,7 +201,7 @@ void print_list(struct linked_list *lst_ptr) {
 void remove_after(int data, struct linked_list *lst_ptr) {
   // Condtion: The linked list is empty
   if (lst_ptr->count == 0) {
-    printf("The linked list is empty");
+    printf("The linked list is empty\n");
     return;
   }
 
