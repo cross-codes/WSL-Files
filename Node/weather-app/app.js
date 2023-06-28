@@ -6,18 +6,18 @@ const location = process.argv[2];
 if (!location) {
   console.log("Please enter a valid location");
 } else {
-  geocode.geocode(location, (error_g, data_g) => {
-    if (error_g) {
-      return console.log(error_g);
+  geocode.geocode(location, (geocodeError, geocodeData) => {
+    if (geocodeError) {
+      return console.log(geocodeError);
     }
-    forecast.forecast(data_g.latitude, data_g.longitude, (error_w, data_w) => {
-      if (error_w) {
-        return console.log(error_w);
+    forecast.forecast(geocodeData.latitude, geocodeData.longitude, (weatherError, weatherData) => {
+      if (weatherError) {
+        return console.log(weatherError);
       }
-      console.log("Location: " + data_g.location);
+      console.log("Location: " + geocodeData.location);
       console.log(
-        "Description: " + data_w.description + ", Temperature: " + data_w.temperature + ", Humidity: "
-          + data_w.humidity,
+        "Description: " + weatherData.description + ", Temperature: " + weatherData.temperature + ", Humidity: "
+          + weatherData.humidity,
       );
     });
   });
