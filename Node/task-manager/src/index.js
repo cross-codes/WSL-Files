@@ -10,7 +10,6 @@ app.use(express.json());
 
 app.post("/users", (req, res) => {
   const user = new User(req.body);
-
   user.save().then(() => {
     res.status(201);
     res.send(user);
@@ -43,7 +42,6 @@ app.get("/users/:id", (req, res) => {
 
 app.post("/tasks", (req, res) => {
   const task = new Task(req.body);
-
   task.save().then(() => {
     res.status(201);
     res.send(task);
