@@ -1,5 +1,4 @@
 #include <stdbool.h>
-
 void sw(int v[], int i, int j) {
   int temp;
 
