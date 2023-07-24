@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import validator from "validator";
 
@@ -40,8 +41,26 @@ const userSchema = new mongoose.Schema({
       }
     },
   },
+  tokens: [
+    {
+      token: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
 });
 
+userSchema.methods.generateAuthToken = async function() {
+  // 'this' contains the userSchema data object
+  const token = jwt.sign({ _id: this._id.toString() }, "generateAuth");
+  this.tokens = this.tokens.concat({ token });
+  await this.save(); // Save token into database, so that comparisons can be made later
+
+  return token;
+};
+
+// Find a user by credentials (used for login)
 userSchema.statics.findByCredentials = async function(email, password) {
   const user = await User.findOne({ email });
 
@@ -60,7 +79,7 @@ userSchema.statics.findByCredentials = async function(email, password) {
 
 // Hash the plain text password
 userSchema.pre("save", async function(next) {
-  // "this" contains the user data object
+  // "this" contains the userSchema data object
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 8);
   }
