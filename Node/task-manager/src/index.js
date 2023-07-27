@@ -7,8 +7,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 const maintenanceMode = false;
 
-// Maintenance Feature
-
 app.use((req, res, next) => {
   if (!maintenanceMode) {
     next();
