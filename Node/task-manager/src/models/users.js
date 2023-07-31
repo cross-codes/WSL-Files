@@ -2,6 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import validator from "validator";
+import Task from "./tasks.js";
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -51,6 +52,12 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
+userSchema.virtual("tasks", {
+  ref: "Task",
+  localField: "_id",
+  foreignField: "owner",
+});
+
 userSchema.methods.toJSON = function() {
   const userObject = this.toObject();
   delete userObject.password;
@@ -90,6 +97,12 @@ userSchema.pre("save", async function(next) {
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 8);
   }
+  next();
+});
+
+// Delete all tasks associated with a user that removes their account
+userSchema.pre("remove", async function(next) {
+  Task.deleteMany({ owner: this._id });
   next();
 });
 
