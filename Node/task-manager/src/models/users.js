@@ -50,6 +50,8 @@ const userSchema = new mongoose.Schema({
       },
     },
   ],
+}, {
+  timestamps: true,
 });
 
 userSchema.virtual("tasks", {
@@ -75,7 +77,6 @@ userSchema.methods.generateAuthToken = async function() {
   return token;
 };
 
-// Find a user by credentials (used for login)
 userSchema.statics.findByCredentials = async function(email, password) {
   const user = await User.findOne({ email });
 
