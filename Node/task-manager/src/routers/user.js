@@ -1,7 +1,21 @@
 import express from "express";
+import multer from "multer";
 import auth from "../middleware/auth.js";
 import User from "../models/users.js";
 const router = new express.Router();
+const upload = multer({
+  dest: "avatars",
+  limits: {
+    fileSize: 1000000,
+  },
+  fileFilter(req, file, callback) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return callback(new Error("Supported extensions are .png, .jpeg and .jpg"));
+    }
+
+    callback(undefined, true);
+  },
+});
 
 router.post("/users", async (req, res) => {
   const user = new User(req.body);
@@ -50,6 +64,12 @@ router.post("/users/login", async (req, res) => {
     res.status(400);
     res.send();
   }
+});
+
+router.post("/users/me/avatar", upload.single("avatar"), (req, res) => {
+  res.send();
+}, (error, req, res, next) => {
+  res.status(400).send({ error: error.message });
 });
 
 router.get("/users/me", auth, async (req, res) => {
