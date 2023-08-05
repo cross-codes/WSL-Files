@@ -4,7 +4,7 @@ import taskRouter from "./routers/task.js";
 import userRouter from "./routers/user.js";
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 const maintenanceMode = false;
 
 app.use((req, res, next) => {

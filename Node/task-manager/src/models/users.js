@@ -75,7 +75,7 @@ userSchema.methods.toJSON = function() {
 
 userSchema.methods.generateAuthToken = async function() {
   // 'this' contains the userSchema data object
-  const token = jwt.sign({ _id: this._id.toString() }, "generateAuth");
+  const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET);
   this.tokens = this.tokens.concat({ token });
   await this.save(); // Save token into database, so that comparisons can be made later
 
