@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "env-cmd nodemon src/index.js",
-    "test": "jest --watch"
+    "test": "env-cmd -f ./tests/.env jest --watch"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +22,7 @@
     "mongoose": "^5.3.16",
     "multer": "^1.4.5-lts.1",
     "sharp": "^0.32.4",
+    "supertest": "^6.3.3",
     "validator": "^13.9.0"
   },
   "type": "module",
