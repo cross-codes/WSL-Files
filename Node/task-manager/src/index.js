@@ -1,9 +1,4 @@
-import express from "express";
-import "./db/mongoose.js";
-import taskRouter from "./routers/task.js";
-import userRouter from "./routers/user.js";
-
-const app = express();
+import app from "./app.js";
 const port = process.env.PORT;
 const maintenanceMode = false;
 
@@ -15,10 +10,6 @@ app.use((req, res, next) => {
     res.send("The server is temporarily down, please try again later");
   }
 });
-
-app.use(express.json());
-app.use(userRouter);
-app.use(taskRouter);
 
 app.listen(port, () => {
   console.log(`Server is up on port ${port}`);
