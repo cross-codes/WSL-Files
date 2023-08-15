@@ -1,6 +1,6 @@
-const request = require("supertest");
-const app = require("../src/app.js");
 const User = require("../src/models/users.js");
+const app = require("../src/app.js");
+const request = require("supertest");
 
 const userOne = {
   name: "Mike",
@@ -9,7 +9,7 @@ const userOne = {
 };
 
 beforeEach(async () => {
-  User.deleteMany();
+  await User.deleteMany();
   const user = new User(userOne);
   await user.save();
 });
