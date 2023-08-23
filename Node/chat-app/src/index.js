@@ -12,15 +12,15 @@ const publicPath = path.join(new URL("../public", import.meta.url).pathname);
 
 app.use(express.static(publicPath));
 
-let count = 0;
-
 io.on("connection", (socket) => {
   console.log("New WebSocket connection");
-  socket.emit("countUpdated", count);
-  socket.on("increment", () => {
-    count++;
-    io.emit("countUpdated", count);
-  });
+
+  socket.emit("message", "Welcome");
+  // socket.emit("countUpdated", count);
+  // socket.on("increment", () => {
+  //   count++;
+  //   io.emit("countUpdated", count);
+  // });
 });
 
 server.listen(port, () => {
