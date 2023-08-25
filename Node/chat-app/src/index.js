@@ -16,11 +16,10 @@ io.on("connection", (socket) => {
   console.log("New WebSocket connection");
 
   socket.emit("message", "Welcome");
-  // socket.emit("countUpdated", count);
-  // socket.on("increment", () => {
-  //   count++;
-  //   io.emit("countUpdated", count);
-  // });
+
+  socket.on("sendMessage", (message) => {
+    io.emit("sendMessage", message);
+  });
 });
 
 server.listen(port, () => {
