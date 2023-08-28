@@ -85,3 +85,5 @@ print("tensor3 = ", tensor3)
 #     [1., 1.],
 #     [1., 1.]
 # ]
+
+print("Evaluated tensor1 value: \n", tensor1.numpy())
