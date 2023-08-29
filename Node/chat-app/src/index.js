@@ -1,3 +1,4 @@
+import Filter from "bad-words";
 import express from "express";
 import http from "http";
 import path from "path";
@@ -18,12 +19,20 @@ io.on("connection", (socket) => {
   socket.emit("message", "Welcome");
   socket.broadcast.emit("message", "A new user has joined");
 
-  socket.on("sendMessage", (message) => {
-    io.emit("sendMessage", message);
+  socket.on("sendMessage", (message, callback) => {
+    const filter = new Filter();
+
+    if (filter.isProfane(message)) {
+      return callback("(F) Reason: Profanity not permitted");
+    }
+
+    io.emit("message", message);
+    callback("(S)");
   });
 
-  socket.on("sendLocation", (locationString) => {
-    io.emit("sendLocation", locationString);
+  socket.on("sendLocation", (locationString, callback) => {
+    io.emit("message", locationString);
+    callback("Location shared");
   });
 
   socket.on("disconnect", () => {
