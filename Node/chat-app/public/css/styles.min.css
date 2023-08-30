@@ -134,10 +134,11 @@ button:disabled {
   padding: 24px;
 }
 .list-title {
-  font-weight: 500;
-  font-size: 18px;
-  margin-bottom: 4px;
-  padding: 12px 24px 0;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+  padding: 12px 24px 12px;
+  background: #423b40;
 }
 .users {
   list-style-type: none;
