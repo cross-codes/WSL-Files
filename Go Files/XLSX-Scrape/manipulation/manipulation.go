@@ -1,4 +1,4 @@
-// Package manipulation stores functions to open and choose content from the spreadsheet
+// Package manipulation stores functions to open and choose content from the spreadsheet and more
 package manipulation
 
 import (
@@ -8,7 +8,9 @@ import (
 )
 
 var rbData []string
+
 var students []Student
+
 var departmentMap = map[string]string{
 	"A1": "Chemical",
 	"A2": "Civil",
@@ -26,6 +28,7 @@ var departmentMap = map[string]string{
 	"B5": "Physics",
 }
 
+// Student describes all atrributes associated with a student
 type Student struct {
 	Name       string
 	ID         string
@@ -47,20 +50,6 @@ func refRowDoer(r *xlsx.Row) error {
 	return r.ForEachCell(refCellDoer)
 }
 
-// DisplaySheets will display all available sheets in the file
-func DisplaySheets(fileName string) {
-	wb, err := xlsx.OpenFile(fileName)
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Sheets in this file: ")
-	for i, sh := range wb.Sheets {
-		fmt.Println(i, sh.Name)
-	}
-	fmt.Println("----")
-}
-
 // CreateNewXLSX will create a new .xlsx file
 func CreateNewXLSX(fileName string, sheetName string) {
 	wb := xlsx.NewFile()
@@ -75,7 +64,25 @@ func CreateNewXLSX(fileName string, sheetName string) {
 		panic(err)
 	}
 
-	fmt.Println(fileName + " created succesfully")
+	fmt.Println("A new XLSX with name '" + fileName + "' was created succesfully\n")
+}
+
+func retParams(fullid string) (string, string, string, string, string) {
+
+	year := fullid[:4]
+	stream := fullid[4:6]
+	id := fullid[8:12]
+	campus := string(fullid[12])
+	email := ""
+	if campus == "P" {
+		email = "f" + year + id + "@pilani.bits-pilani.ac.in"
+	} else if campus == "G" {
+		email = "f" + year + id + "@goa.bits-pilani.ac.in"
+	} else if campus == "H" {
+		email = "f" + year + id + "@hyderabad.bits-pilani.ac.in"
+	}
+
+	return year, stream, id, campus, email
 }
 
 // FillXLSXValues will fill in new values inside the spreasheet
@@ -102,58 +109,41 @@ func FillXLSXValues(refFileName string, fileName string, refSheetName string, sh
 	}
 
 	rsh.ForEachRow(refRowDoer)
+	arrCount := 0
 
-	cell, _ := sh.Cell(0, 0)
-	cell.Value = rbData[0]
-	cell, _ = sh.Cell(0, 1)
-	cell.Value = rbData[1]
-	cell, _ = sh.Cell(0, 2)
+	for ; arrCount < 2; arrCount++ {
+		cell, _ := sh.Cell(0, arrCount)
+		cell.Value = rbData[arrCount]
+	}
+
+	cell, _ := sh.Cell(0, 2)
 	cell.Value = "Email"
 	cell, _ = sh.Cell(0, 3)
 	cell.Value = "Branch"
 
 	rowIndex := 1
 	colIndex := 0
-	arrCount := 2
 
-	for true {
-		if arrCount >= len(rbData) {
-			break
-		}
-		cell, _ = sh.Cell(rowIndex, colIndex)
+	for ; arrCount < len(rbData); arrCount++ {
 		if arrCount%2 != 0 {
-
-			cell.Value = rbData[arrCount]
-			fullID := rbData[arrCount]
-			year := fullID[:4]
-			stream := fullID[4:6]
-			id := fullID[8:12]
-			campus := string(fullID[12])
-			email := ""
-			if campus == "P" {
-				email = "f" + year + id + "@pilani.bits-pilani.ac.in"
-			} else if campus == "G" {
-				email = "f" + year + id + "@goa.bits-pilani.ac.in"
-			} else if campus == "H" {
-				email = "f" + year + id + "@hyderabad.bits-pilani.ac.in"
+			_, stream, _, _, email := retParams(rbData[arrCount])
+			for ; colIndex <= 3; colIndex++ {
+				cell, _ = sh.Cell(rowIndex, colIndex)
+				switch colIndex {
+				case 1:
+					cell.Value = rbData[arrCount]
+				case 2:
+					cell.Value = email
+				case 3:
+					cell.Value = departmentMap[stream]
+				}
 			}
-			cell, _ = sh.Cell(rowIndex, colIndex)
-			cell.Value = fullID
-			colIndex++
-			cell, _ = sh.Cell(rowIndex, colIndex)
-			cell.Value = email
-			colIndex++
-			cell, _ = sh.Cell(rowIndex, colIndex)
-			cell.Value = departmentMap[stream]
-			colIndex++
 			rowIndex++
 			colIndex = 0
-			arrCount++
 		} else {
 			cell, _ = sh.Cell(rowIndex, colIndex)
 			cell.Value = rbData[arrCount]
 			colIndex++
-			arrCount++
 		}
 	}
 
@@ -163,9 +153,48 @@ func FillXLSXValues(refFileName string, fileName string, refSheetName string, sh
 	}
 }
 
-func (s Student) printDetails() {
-	fmt.Println("Name:", s.Name)
-	fmt.Println("ID: ", s.ID)
-	fmt.Println("Email: ", s.Email)
-	fmt.Println("Department: ", s.Department)
+func readNewSheet(fileName string, sheetName string) {
+
+	wb, err := xlsx.OpenFile(fileName)
+	if err != nil {
+		panic(err)
+	}
+
+	sh, ok := wb.Sheet[sheetName]
+	if !ok {
+		fmt.Println(sheetName + " does not exist")
+		return
+	}
+	rbData = nil
+	sh.ForEachRow(refRowDoer)
+}
+
+func createStudentStructs() {
+	for i := 4; i < len(rbData); i += 4 {
+		if i%4 == 0 {
+			s := Student{
+				Name:       rbData[i],
+				ID:         rbData[i+1],
+				Email:      rbData[i+2],
+				Department: rbData[i+3],
+			}
+			students = append(students, s)
+		}
+	}
+}
+
+// PrintDetails prints all the student details from the new sheet
+func PrintDetails(fileName string, sheetName string) {
+	readNewSheet(fileName, sheetName)
+	createStudentStructs()
+	fmt.Println("Reading contents of newly created '" + sheetName + "' in '" + fileName + "'")
+	fmt.Println("--------------------------")
+	for i := 0; i < len(students); i++ {
+		s := students[i]
+		fmt.Println("Name:", s.Name)
+		fmt.Println("ID: ", s.ID)
+		fmt.Println("Email: ", s.Email)
+		fmt.Println("Department: ", s.Department)
+		fmt.Println("--------------------------")
+	}
 }
