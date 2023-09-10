@@ -1,7 +1,14 @@
 package routers
 
-import "github.com/gin-gonic/gin"
+import (
+	"server/controllers"
+
+	"github.com/gin-gonic/gin"
+)
 
 func UserRoute(router *gin.Engine) {
-	// All routes related to users come here
+	router.POST("/user", controllers.CreateUser())
+	router.GET("/user/:userId", controllers.GetAUser())
+	router.PUT("/user/:userId", controllers.EditAUser())
+	router.DELETE("/user/:userId", controllers.DeleteAUser())
 }
