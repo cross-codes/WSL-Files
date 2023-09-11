@@ -53,12 +53,12 @@ There are no descriptions for any of the columns, but here are my educated guess
 
 ##### (a) Removing null values
 
-File: EDA/null_check.py
+File: `EDA/null_check.py`
 
 ```python
 import pandas as pd
 
-df = pd.read_csv("../smoking_driking_dataset_Ver01.csv")
+df = pd.read_csv("../original.csv")
 
 missing_values = df.isnull().sum()
 
@@ -76,7 +76,8 @@ The best method according to most sources is using the interquartile range
 approach to detect outliers.
 First we start by generating the box plot for every column
 
-File:`EDA/outliers.py`
+File: `EDA/outliers.py`
+
 Images: `EDA/img`
 
 ```python
