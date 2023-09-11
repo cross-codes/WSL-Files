@@ -4,10 +4,9 @@
 The final report based on my attempt at this task. Also a documentation of my
 thought process during the same.
 </div>
-
 Local file with the models: main.py
 
-.csv file: smoking_drinking_dataset_Ver01.csv
+Unmodified `.csv` file: `original.csv`
 
 ---
 
@@ -49,3 +48,87 @@ There are no descriptions for any of the columns, but here are my educated guess
 | gamma_GTP          | Gamma-Glutamyl Transferase (GGT or gamma-GTP) level in the blood, related to liver and bile duct function. Units are /l. |
 | SMK_stat_type_cd (U) | Smoking status or type of smoking. Values in {1, 2, 3}. Further analysis is required to determine what each number could represent. |
 | DRK_YN             | Drinking status. Y (Yes), N (No).                                                                    |
+
+#### (ii) Data Cleansing process
+
+##### (a) Removing null values
+
+File: EDA/null_check.py
+
+```python
+import pandas as pd
+
+df = pd.read_csv("../smoking_driking_dataset_Ver01.csv")
+
+missing_values = df.isnull().sum()
+
+print("Columns with missing values: ")
+for column, count in missing_values.items():
+    if count > 0:
+        print(f"{column}: {count} missing values")
+```
+
+No missing values were found
+
+##### (b) Addressing outliers
+
+The best method according to most sources is using the interquartile range
+approach to detect outliers.
+First we start by generating the box plot for every column
+
+File:`EDA/outliers.py`
+Images: `EDA/img`
+
+```python
+def generate_box_plot(column_name):
+    plt.figure(figsize=(10, 6))
+    plt.boxplot(df[column_name], vert=False)
+    plt.title("Box Plot for " + column_name)
+    plt.xlabel(column_name)
+    plt.savefig("./img/box_plot_" + column_name + ".png")
+    return 0
+
+for column in column_names:
+    generate_box_plot(column)
+```
+
+where the column_names are defined as:
+
+```python
+column_names = [
+    "sight_left",
+    "sight_right",
+    "hear_left",
+    "hear_right",
+    "SBP",
+    "DBP",
+    "BLDS",
+    "tot_chole",
+    "HDL_chole",
+    "LDL_chole",
+    "triglyceride",
+    "hemoglobin",
+    "urine_protein",
+    "serum_creatinine",
+    "SGOT_AST",
+    "SGOT_ALT",
+    "gamma_GTP",
+]
+```
+
+From the box plots, outliers in the following columns need to be removed:
+`sight_left`, `sight_right`
+
+![sight_left](./EDA/img/box_plot_sight_left.png)
+![sight_right](./EDA/img/box_plot_sight_right.png)
+
+While for the other columns, although some of the plots have too many potential outliers
+(cf.eg `gamma_GTP` with this box plot:)
+
+![gamma_GTP](./EDA/img/box_plot_gamma_GTP.png)
+
+Some research online suggests that such large deviations are indeed possible, and
+some of the biological data (like `gamma_GTP` and `SGOT_AST`) itself seems to
+be very relevant to issues regarding drinking and smoking.
+
+Several entries were removed
