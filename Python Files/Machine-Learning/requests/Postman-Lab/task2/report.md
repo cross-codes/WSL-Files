@@ -133,3 +133,68 @@ some of the biological data (like `gamma_GTP` and `SGOT_AST`) itself seems to
 be very relevant to issues regarding drinking and smoking.
 
 Several entries were removed
+
+##### (c) Converting data types
+
+`DRK_YN` contains entires in {"Y", "N"}, so I will convert them into {1, 0}
+
+File: `EDA/convert.py`
+
+```python
+df = pd.read_csv("../processed.csv")
+
+df["DRK_YN"] = df["DRK_YN"].replace({"Y": 1, "N": 0})
+df.to_csv("../processed.csv", index=False)
+```
+
+##### (d) Feature engineering
+
+This is just adding useful columns derived from other related columns
+The height and weight are useful parameters for this test, but I think
+it's better if we just combine them and use the BMI instead.
+
+The formula for BMI is $\beta = \frac{\text{Mass(kg)}}{\text{Height(m)}^2}$
+So I'm going to add this column next to the weight and height
+From the scouting, the height is in `cm`, so this needs to be accounted for.
+
+```python
+df = pd.read_csv("../processed.csv")
+df["bmi"] = round(df["weight"] / ((df["height"] / 100) ** 2), 2)
+
+columns_order = [
+    "sex",
+    "age",
+    "height",
+    "weight",
+    "bmi",
+    "waistline",
+    "sight_left",
+    "sight_right",
+    "hear_left",
+    "hear_right",
+    "SBP",
+    "DBP",
+    "BLDS",
+    "tot_chole",
+    "HDL_chole",
+    "LDL_chole",
+    "triglyceride",
+    "hemoglobin",
+    "urine_protein",
+    "serum_creatinine",
+    "SGOT_AST",
+    "SGOT_ALT",
+    "gamma_GTP",
+    "SMK_stat_type_cd",
+    "DRK_YN",
+]
+
+df = df[columns_order]
+df.to_csv("../processed.csv", index=False)
+```
+
+The BMI (rounded off to two decimal reports is now present next to the weight column)
+
+---
+The columns seem to be meaningful in name, and there is only numerical input, so
+this concludes my preliminary EDA.
