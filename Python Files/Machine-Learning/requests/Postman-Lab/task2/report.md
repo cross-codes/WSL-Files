@@ -193,8 +193,112 @@ df = df[columns_order]
 df.to_csv("../processed.csv", index=False)
 ```
 
-The BMI (rounded off to two decimal reports is now present next to the weight column)
+The BMI (rounded off to two decimal) reports is now present next to the weight column
 
 ---
 The columns seem to be meaningful in name, and there is only numerical input, so
 this concludes my preliminary EDA.
+
+---
+
+## (2) Data plotting
+
+The objective is to check the relationship between various entries in the dataset
+I will try generating pair plots,
+heatmaps, scatter plots, histograms, distribution plots, and bar charts
+
+##### (a) Pair plots
+
+This consumed all of my RAM, and took an hour to perform:
+
+![Pair Plot](./DP/img/pair_plot.png)
+
+```python
+import matplotlib.pyplot as plot
+import pandas as pd
+import seaborn as sb
+
+df = pd.read_csv("../processed.csv")
+sb.pairplot(df, diag_kind="kde")
+plot.savefig("./img/pair_plot.png")
+```
+
+The figure is very detailed, but I am not entirely sure on how to interpret it.
+For smoking type, it seems like 1 and 0 are equally as dense.
+
+One relevant feature that I can deduce from this is likely this: In
+the smoking status type,
+(1) -> Never/Minimal
+(2) -> Used to before / less
+(3) -> smoker
+
+Relevant parameters seem to be `SGOT_AST` and `SGOT_ALT` for drinking.
+Further research suggests that the `SGOT_AST`/`SGOT_ALT` ratio is very
+important for drinking detection, so I will add that column.
+
+##### (b) Heatmaps
+
+The heatmap is very useful. We get a good idea of how each column is
+corelated with the other
+
+```python
+df = pd.read_csv("../processed.csv")
+df = df[
+    [
+        "SBP",
+        "DBP",
+        "BLDS",
+        "tot_chole",
+        "HDL_chole",
+        "LDL_chole",
+        "triglyceride",
+        "hemoglobin",
+        "urine_protein",
+        "serum_creatinine",
+        "SGOT_AST",
+        "SGOT_ALT",
+        "AST/ALT",
+        "gamma_GTP",
+        "SMK_stat_type_cd",
+        "DRK_YN",
+    ]
+]
+
+plot.figure(figsize=(10, 8))
+
+heatmap = sb.heatmap(
+    df.corr(), annot=True, cmap="coolwarm", fmt=".2f", annot_kws={"size": 10}
+)
+heatmap.set_xticklabels(
+    heatmap.get_xticklabels(), rotation=45, horizontalalignment="right"
+)
+heatmap.set_aspect("equal")
+plot.savefig("./img/heatmap.png")
+```
+
+![Heatmap](./DP/img/heatmap.png)
+
+It appears that drinking is in fact not corelated with my proposed ratio, but rather
+with haemoglobin count and `gamma_GTP`. Furthermore, people that smoke are likely to drink (?)
+
+#### (c) Histograms
+
+Some histograms plotted are as follows:
+
+```python
+
+df = pd.read_csv("../processed.csv")
+plot.hist(df[df["column_1"] == 0]["column_2"], alpha=0.5, label="label1")
+plot.hist(df[df["column_1"] == 1]["column_2"], alpha=0.5, label="label2")
+plot.xlabel("column_2")
+plot.ylabel("Frequency")
+plot.legend()
+```
+
+![Histogram1](./DP/img/hemo_histogram.png)
+![Histogram2](./DP/img/gamma_histogram.png)
+![Histogram3](./DP/img/hemo_smoke_histogram.png)
+
+All matching with the heatmap, which was by far the most useful
+
+---
