@@ -205,7 +205,7 @@ this concludes my preliminary EDA.
 
 The objective is to check the relationship between various entries in the dataset
 I will try generating pair plots,
-heatmaps, scatter plots, histograms, distribution plots, and bar charts
+heatmaps, histograms
 
 ##### (a) Pair plots
 
