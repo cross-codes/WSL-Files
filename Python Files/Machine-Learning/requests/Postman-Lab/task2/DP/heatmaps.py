@@ -1,36 +1,52 @@
 import pandas as pd
-import seaborn as sb
+import seaborn as sns
 import matplotlib.pyplot as plot
 
 df = pd.read_csv("../processed.csv")
-df = df[
-    [
-        "SBP",
-        "DBP",
-        "BLDS",
-        "tot_chole",
-        "HDL_chole",
-        "LDL_chole",
-        "triglyceride",
-        "hemoglobin",
-        "urine_protein",
-        "serum_creatinine",
-        "SGOT_AST",
-        "SGOT_ALT",
-        "AST/ALT",
-        "gamma_GTP",
-        "SMK_stat_type_cd",
-        "DRK_YN",
-    ]
+
+columns_to_include = [
+    "age",
+    "height",
+    "weight",
+    "waistline",
+    "sight_left",
+    "sight_right",
+    "hear_left",
+    "hear_right",
+    "SBP",
+    "DBP",
+    "BLDS",
+    "tot_chole",
+    "HDL_chole",
+    "LDL_chole",
+    "triglyceride",
+    "hemoglobin",
+    "urine_protein",
+    "serum_creatinine",
+    "SGOT_AST",
+    "SGOT_ALT",
+    "gamma_GTP",
+    "SMK_stat_type_cd",
+    "DRK_YN",
 ]
 
-plot.figure(figsize=(10, 8))
+df_subset = df[columns_to_include]
 
-heatmap = sb.heatmap(
-    df.corr(), annot=True, cmap="coolwarm", fmt=".2f", annot_kws={"size": 10}
+plot.figure(figsize=(12, 10))
+
+heatmap = sns.heatmap(
+    df_subset.corr(),
+    annot=True,
+    cmap="coolwarm",
+    fmt=".2f",
+    annot_kws={"size": 8},
 )
+
 heatmap.set_xticklabels(
-    heatmap.get_xticklabels(), rotation=45, horizontalalignment="right"
+    heatmap.get_xticklabels(),
+    rotation=45,
+    horizontalalignment="right",
 )
+
 heatmap.set_aspect("equal")
-plot.savefig("./img/heatmap.png")
+plot.savefig("./img/heatmap.png", bbox_inches="tight")

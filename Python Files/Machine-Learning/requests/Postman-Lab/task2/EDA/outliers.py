@@ -1,10 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-df_original = pd.read_csv("../original.csv")
-df = df_original.copy()
+df = pd.read_csv("../processed.csv")
+df_original = df.copy()
+print(df.describe())
+
 
 column_names = [
+    "age",
+    "height",
+    "weight",
+    "waistline",
     "sight_left",
     "sight_right",
     "hear_left",
@@ -22,11 +28,21 @@ column_names = [
     "SGOT_AST",
     "SGOT_ALT",
     "gamma_GTP",
+    "SMK_stat_type_cd",
 ]
 
 columns_to_be_removed = [
     "sight_left",
     "sight_right",
+    "waistline",
+    "SBP",
+    "DBP",
+    "BLDS",
+    "tot_chole",
+    "triglyceride",
+    "serum_creatinine",
+    "SGOT_AST",
+    "SGOT_ALT",
 ]
 
 
@@ -39,13 +55,14 @@ def generate_box_plot(column_name):
     return 0
 
 
-def remove_outliers(dataframe, column_name):
+def remove_outliers(dataframe, column_name, k=1.5):
     Q1 = dataframe[column_name].quantile(0.25)
     Q3 = dataframe[column_name].quantile(0.75)
     IQR = Q3 - Q1
-    LB = Q1 - 1.5 * IQR
-    UB = Q3 + 1.5 * IQR
-    return dataframe[(dataframe[column_name] >= LB) & (dataframe[column_name] <= UB)]
+    LB = Q1 - k * IQR
+    UB = Q3 + k * IQR
+    dataframe[column] = dataframe[column].clip(lower=LB, upper=UB)
+    return dataframe
 
 
 for column in column_names:
@@ -55,3 +72,4 @@ for column in columns_to_be_removed:
     df = remove_outliers(df_original, column)
 
 df.to_csv("../processed.csv", index=False)
+print(df.describe())

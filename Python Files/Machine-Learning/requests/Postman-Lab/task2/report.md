@@ -7,6 +7,7 @@ thought process during the same.
 Local file with the models: main.py
 
 Unmodified `.csv` file: `original.csv`
+Processed `.csv` file: `processed.csv`
 
 ---
 
@@ -51,7 +52,7 @@ There are no descriptions for any of the columns, but here are my educated guess
 
 #### (ii) Data Cleansing process
 
-##### (a) Removing null values
+##### (a) Removing null values and duplicates
 
 File: `EDA/null_check.py`
 
@@ -69,6 +70,21 @@ for column, count in missing_values.items():
 ```
 
 No missing values were found
+
+File: `EDA/duplicates.py`
+
+```python
+
+df = pd.read_csv("../original.csv")
+print(df[df.duplicated].shape)  # (26, 24) -> 26 duplicates for 24 columns
+print(df.describe())
+df = df.drop_duplicates(keep="first")
+df.to_csv("../processed.csv", index=False)
+print(df.describe())
+```
+
+Removing duplicates is necessary because it prevents over-fitting, especially when
+they are large in number (26 does not cut it though)
 
 ##### (b) Addressing outliers
 
@@ -97,6 +113,10 @@ where the column_names are defined as:
 
 ```python
 column_names = [
+    "age",
+    "height",
+    "weight",
+    "waistline",
     "sight_left",
     "sight_right",
     "hear_left",
@@ -117,22 +137,37 @@ column_names = [
 ]
 ```
 
-From the box plots, outliers in the following columns need to be removed:
-`sight_left`, `sight_right`
+Then we remove outliers for the following columns:
 
-![sight_left](./EDA/img/box_plot_sight_left.png)
-![sight_right](./EDA/img/box_plot_sight_right.png)
+```python
 
-While for the other columns, although some of the plots have too many potential outliers
-(cf.eg `gamma_GTP` with this box plot:)
+columns_to_be_removed = [
+    "sight_left",
+    "sight_right",
+    "waistline",
+    "SBP",
+    "DBP",
+    "BLDS",
+    "tot_chole",
+    "triglyceride",
+    "serum_creatinine",
+    "SGOT_AST",
+    "SGOT_ALT",
+]
+```
+
+`gamma_GTP` was intentionally left out because I feel like I'd loose a lot of
+data considering this box plot:
 
 ![gamma_GTP](./EDA/img/box_plot_gamma_GTP.png)
 
-Some research online suggests that such large deviations are indeed possible, and
-some of the biological data (like `gamma_GTP` and `SGOT_AST`) itself seems to
-be very relevant to issues regarding drinking and smoking.
+Honestly some of the parameters like `SGOT_AST` really seem important, as a
+higher value indicates something related to
+alcohol consumption, but I can't really tell how important each entry is,
+without a domain expert.
 
-Several entries were removed
+I also have a suspicion that `sight_left` and `sight_right` must lie in (0, 1],
+but I have no way to confirm this.
 
 ##### (c) Converting data types
 
@@ -156,6 +191,8 @@ it's better if we just combine them and use the BMI instead.
 The formula for BMI is $\beta = \frac{\text{Mass(kg)}}{\text{Height(m)}^2}$
 So I'm going to add this column next to the weight and height
 From the scouting, the height is in `cm`, so this needs to be accounted for.
+
+File: `EDA\feature_engg.py`
 
 ```python
 df = pd.read_csv("../processed.csv")
@@ -195,7 +232,6 @@ df.to_csv("../processed.csv", index=False)
 
 The BMI (rounded off to two decimal) reports is now present next to the weight column
 
----
 The columns seem to be meaningful in name, and there is only numerical input, so
 this concludes my preliminary EDA.
 
@@ -210,6 +246,10 @@ heatmaps, histograms
 ##### (a) Pair plots
 
 This consumed all of my RAM, and took an hour to perform:
+
+File: `DP/pair_plots.py`
+
+Image: `DP/img/pair_plot.png`
 
 ![Pair Plot](./DP/img/pair_plot.png)
 
@@ -241,49 +281,70 @@ important for drinking detection, so I will add that column.
 The heatmap is very useful. We get a good idea of how each column is
 corelated with the other
 
+File: `DP/heatmaps.py`
+
+Image: `DP/img/heatmap.py`
+
 ```python
 df = pd.read_csv("../processed.csv")
-df = df[
-    [
-        "SBP",
-        "DBP",
-        "BLDS",
-        "tot_chole",
-        "HDL_chole",
-        "LDL_chole",
-        "triglyceride",
-        "hemoglobin",
-        "urine_protein",
-        "serum_creatinine",
-        "SGOT_AST",
-        "SGOT_ALT",
-        "AST/ALT",
-        "gamma_GTP",
-        "SMK_stat_type_cd",
-        "DRK_YN",
-    ]
+
+columns_to_include = [
+    "age",
+    "height",
+    "weight",
+    "waistline",
+    "sight_left",
+    "sight_right",
+    "hear_left",
+    "hear_right",
+    "SBP",
+    "DBP",
+    "BLDS",
+    "tot_chole",
+    "HDL_chole",
+    "LDL_chole",
+    "triglyceride",
+    "hemoglobin",
+    "urine_protein",
+    "serum_creatinine",
+    "SGOT_AST",
+    "SGOT_ALT",
+    "gamma_GTP",
+    "SMK_stat_type_cd",
+    "DRK_YN",
 ]
 
-plot.figure(figsize=(10, 8))
+df_subset = df[columns_to_include]
 
-heatmap = sb.heatmap(
-    df.corr(), annot=True, cmap="coolwarm", fmt=".2f", annot_kws={"size": 10}
+plot.figure(figsize=(12, 10))
+
+heatmap = sns.heatmap(
+    df_subset.corr(),
+    annot=True,
+    cmap="coolwarm",
+    fmt=".2f",
+    annot_kws={"size": 8},
 )
+
 heatmap.set_xticklabels(
-    heatmap.get_xticklabels(), rotation=45, horizontalalignment="right"
+    heatmap.get_xticklabels(),
+    rotation=45,
+    horizontalalignment="right",
 )
+
 heatmap.set_aspect("equal")
-plot.savefig("./img/heatmap.png")
+plot.savefig("./img/heatmap.png", bbox_inches="tight")
 ```
 
 ![Heatmap](./DP/img/heatmap.png)
 
-It appears that drinking is in fact not corelated with my proposed ratio, but rather
-with haemoglobin count and `gamma_GTP`. Furthermore, people that smoke are likely to drink (?)
-
 #### (c) Histograms
 
 Some histograms plotted are as follows:
+
+File: `DP/histogram.py`
+
+Images: `DP/img/*_histogram.py`
 
 ```python
 
@@ -302,3 +363,174 @@ plot.legend()
 All matching with the heatmap, which was by far the most useful
 
 ---
+
+### (3) Model Making
+
+Note: I'm on a terminal environment, so memory consumption is not something I'll
+be including in this analysis. This is primarily because I do not have access
+to the magic `%memit` command or an equivalent, and the standard ways of
+measuring memory consumption would be dependent on my virtual environment's python
+interpreter and the processes running on my laptop
+
+#### (i) Linear Regression or Logistic Regression
+
+File: `models/linear_regression.py`
+
+```python
+import time
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import accuracy_score, classification_report
+
+start_time = time.time()
+
+df = pd.read_csv("../processed.csv")
+X = df.drop(columns=["DRK_YN", "sex"], axis=1)
+y = df.DRK_YN
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=69
+)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred.round())
+report = classification_report(y_test, y_pred.round())
+
+print(f"Accuracy: {accuracy:.2f}")
+print("Classification Report:")
+print(report)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+
+print(f"Time taken: {elapsed_time:.2f} seconds")
+```
+
+The result is as follows:
+
+```bash
+Accuracy: 0.72
+Classification Report:
+              precision    recall  f1-score   support
+
+        -2.0       0.00      0.00      0.00         0
+        -1.0       0.00      0.00      0.00         0
+         0.0       0.71      0.74      0.73     98304
+         1.0       0.73      0.69      0.71     97861
+         2.0       0.00      0.00      0.00         0
+
+    accuracy                           0.72    196165
+   macro avg       0.29      0.29      0.29    196165
+weighted avg       0.72      0.72      0.72    196165
+
+Time taken: 1.46 seconds
+```
+
+What is a linear regression model, and how did this work?
+
+How to interpret this information
+
+##### (ii) Support Vector Machine
+
+File: `models/svm.py`
+
+```python
+
+import time
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, classification_report
+
+start_time = time.time()
+
+df = pd.read_csv("../processed.csv")
+X = df.drop(columns=["DRK_YN", "sex"], axis=1)
+y = df.DRK_YN
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=69
+)
+
+svmc = SVC(kernel="rbf", C=1.0)
+svmc.fit(X_train, y_train)
+
+
+y_pred = svmc.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred.round())
+report = classification_report(y_test, y_pred.round())
+
+print(f"Accuracy: {accuracy:.2f}")
+print("Classification Report:")
+print(report)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+
+print(f"Time taken: {elapsed_time:.2f} seconds")
+
+```
+
+I did not know the underlying distribution, so I choose a radial basis function
+for my kernel.
+
+##### (iii) Random Forest Classifiers
+
+File: `models/random_forests.py`
+
+```python
+import time
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+start_time = time.time()
+
+df = pd.read_csv("../processed.csv")
+X = df.drop(columns=["DRK_YN", "sex"], axis=1)
+y = df.DRK_YN
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=69
+)
+
+model = RandomForestClassifier(n_estimators=100, random_state=69, n_jobs=-1)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+print(f"Accuracy: {accuracy:.2f}")
+print("Classification Report:")
+print(report)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+
+print(f"Time taken: {elapsed_time:.2f} seconds")
+```
+
+The result is as follows
+
+```bash
+Accuracy: 0.73
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.73      0.74      0.73     98304
+           1       0.73      0.72      0.73     97861
+
+    accuracy                           0.73    196165
+   macro avg       0.73      0.73      0.73    196165
+weighted avg       0.73      0.73      0.73    196165
+
+Time taken: 73.76 seconds
+```
+
+##### (iv) k-Nearest Neighbours clustering
