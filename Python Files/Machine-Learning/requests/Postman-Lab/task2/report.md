@@ -1,7 +1,7 @@
 <div align="center">
-<h1>Postman AI/ML/DL Recruitment Task - Round 2</h1>
+<h1>Postman ML/DL Recruitment Task - Round 2</h1>
 
-A report documenting the process for completing the task
+A report documenting my approach towards completing the task.
 </div>
 
 Unmodified `.csv` file: `original.csv`
@@ -250,39 +250,41 @@ plotting however.
 ## (2) Data plotting
 
 The objective is to check the relationship between various entries in the dataset.
-To do this, I will try generating pair plots,
-heatmaps and histograms between some relevant quantities
+To do this, I will try generating histograms,
+heatmaps and bar graphs between some relevant quantities
 
-##### (2.1) Pair plots
+##### (2.1) Histograms
 
-A very memory intensive operation, needed a lot of time to perform
+I have used the `seaborn` library to generate some useful counting based histograms
 
-File: `DP/pair_plots.py`
+File: `DP/histograms.py`
 
-Image: `DP/img/pair_plot.png`
-
-![Pair Plot](./DP/img/pair_plot.png)
+Image: `DP/img/sb_*.png`
 
 ```python
-import matplotlib.pyplot as plot
-import pandas as pd
-import seaborn as sb
-
-df = pd.read_csv("../processed.csv")
-sb.pairplot(df, diag_kind="kde")
-plot.savefig("./img/pair_plot.png")
+def generate_histplot(column_name):
+    df = pd.read_csv("../processed.csv")
+    plot.figure(figsize=(12, 6))
+    sb.histplot(
+        data=df, x=column_name, palette="pastel", hue="DRK_YN", multiple="stack"
+    )
+    plot.savefig("./img/sb_" + column_name.replace("/", "") + ".png")
+    return 0
 ```
 
-This is essentially a comparison of every column vs every other column.
-The figure is very detailed, so you may zoom in to see each relationship
-
-For example, the relationship between `age` and `DRK_YN` is demonstrated by the
-first cell:
+![Age vs Drinking Status](./DP/img/sb_age.png)
+![Weight vs Drinking status](./DP/img/sb_weight.png)
+![Hemoglobin vs Drinking Status](./DP/img/sb_hemoglobin.png)
+![Serum Creatinine vs Drinking Status](./DP/img/sb_serum_creatinine.png)
+![gamma_GTP vs Drinking Status](./DP/img/sb_gamma_GTP.png)
+![smk status vs Drinking Status](./DP/img/sb_SMK_stat_type_cd.png)
+![alt vs Drinking Status](./DP/img/sb_SGOT_ALT.png)
+![ast vs Drinking Status](./DP/img/sb_SGOT_AST.png)
 
 Relevant parameters seem to be `SGOT_AST` and `SGOT_ALT` for drinking.
 Further research suggests that the `SGOT_AST`/`SGOT_ALT` ratio is [very
 important for drinking detection](https://en.wikipedia.org/wiki/AST/ALT_ratio),
-so I will add that column.
+so I will add that as a column (`EDA/feature_engg.py`)
 
 ##### (2.2) Heatmaps
 
@@ -361,6 +363,8 @@ with the drinking status of a person:
 (5) Gamma-Glutamyl content
 
 (6) Smoking status
+
+(7) SGOT_ALT and AST
 
 #### (2.3) Histograms
 
