@@ -2,7 +2,7 @@ import pandas as pd
 
 df = pd.read_csv("../processed.csv")
 df["bmi"] = round(df["weight"] / ((df["height"] / 100) ** 2), 2)
-df["AST/ALT"] = df["SGOT_AST"] / df["SGOT_ALT"]
+df["AST/ALT"] = round(df["SGOT_AST"] / df["SGOT_ALT"], 2)
 
 columns_order = [
     "sex",

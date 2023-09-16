@@ -427,7 +427,7 @@ Classification Report:
    macro avg       0.29      0.29      0.29    196165
 weighted avg       0.72      0.72      0.72    196165
 
-Time taken: 1.46 seconds
+Time taken: 1.87 seconds
 ```
 
 What is a linear regression model, and how did this work?
@@ -530,7 +530,7 @@ Classification Report:
    macro avg       0.73      0.73      0.73    196165
 weighted avg       0.73      0.73      0.73    196165
 
-Time taken: 73.76 seconds
+Time taken: 84.89 seconds
 ```
 
-##### (iv) k-Nearest Neighbours clustering
+##### (iv) Neural Networks
