@@ -390,7 +390,7 @@ to the magic `%memit` command or an equivalent, and the standard ways of
 measuring memory consumption would be dependent on my virtual environment's python
 interpreter and the processes running on my laptop
 
-#### (i) Linear Regression or Logistic Regression
+#### (3.1) Linear Regression or Logistic Regression
 
 File: `models/linear_regression.py`
 
@@ -481,7 +481,7 @@ weighted avg       0.72      0.72      0.72    196165
 Time taken: 1.72 seconds
 ```
 
-##### (ii) Support Vector Machine
+##### (3.2) Support Vector Machine
 
 File: `models/svm.py`
 
@@ -531,7 +531,7 @@ even after 2 hours, the model was not finished.
 Even if there were any potential gains in accuracy, the time
 this model takes drags this down
 
-##### (iii) Random Forest Classifiers
+##### (3.3) Random Forest Classifier
 
 File: `models/random_forests.py`
 
@@ -591,4 +591,78 @@ but the amount of time it takes is far more.
 I also set `n_jobs=-1` to use all of my cores. Without this
 the process took over 3 minutes
 
-##### (iv) Neural Networks
+##### (3.4) Gaussian Naive Bayes Classifier
+
+File: `models/naive_bayes.py`
+
+```python
+import time
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score, classification_report
+
+start_time = time.time()
+
+df = pd.read_csv("../processed.csv")
+X = df.drop(columns=["DRK_YN", "sex"], axis=1)
+y = df.DRK_YN
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=69
+)
+
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+print(f"Accuracy: {accuracy:.2f}")
+print("Classification Report:")
+print(report)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+
+print(f"Time taken: {elapsed_time:.2f} seconds")
+```
+
+The results are as follows:
+
+```bash
+Accuracy: 0.69
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.68      0.71      0.69     98304
+           1       0.70      0.66      0.68     97861
+
+    accuracy                           0.69    196165
+   macro avg       0.69      0.69      0.69    196165
+weighted avg       0.69      0.69      0.69    196165
+
+Time taken: 1.51 seconds
+```
+
+Since GNB assumes each parameter is independent
+(which is obviously not true), I improved the performace
+by dropping columns with a low correlation like in (3.1)
+
+The accuracy did not improve, but it is significantly faster
+
+```bash
+Accuracy: 0.69
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.67      0.75      0.71     98304
+           1       0.71      0.63      0.67     97861
+
+    accuracy                           0.69    196165
+   macro avg       0.69      0.69      0.69    196165
+weighted avg       0.69      0.69      0.69    196165
+
+Time taken: 1.37 seconds
+```
