@@ -1,5 +1,8 @@
 # Gitignore for the following technologies: C, Node, Python, Rust, Julia, C++, Go, Vim
 
+# Memory profiles
+mprofile_*.dat
+
 # Prerequisites
 *.d
 
