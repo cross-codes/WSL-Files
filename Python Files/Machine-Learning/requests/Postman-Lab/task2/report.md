@@ -390,7 +390,7 @@ to the magic `%memit` command or an equivalent, and the standard ways of
 measuring memory consumption would be dependent on my virtual environment's python
 interpreter and the processes running on my laptop
 
-#### (3.1) Linear Regression or Logistic Regression
+#### (3.1) Linear Regression
 
 File: `models/linear_regression.py`
 
@@ -591,6 +591,11 @@ but the amount of time it takes is far more.
 I also set `n_jobs=-1` to use all of my cores. Without this
 the process took over 3 minutes
 
+RFC is also sensitive to quantities high intercorrelation. I
+tried dropping some columns that were correlated with a lot of
+others, and trained it on a smaller dataset, but no significant
+change was noted
+
 ##### (3.4) Gaussian Naive Bayes Classifier
 
 File: `models/naive_bayes.py`
@@ -650,7 +655,7 @@ Since GNB assumes each parameter is independent
 (which is obviously not true), I improved the performace
 by dropping columns with a low correlation like in (3.1)
 
-The accuracy did not improve, but it is significantly faster
+The accuracy did not improve, but it is faster
 
 ```bash
 Accuracy: 0.69
@@ -666,3 +671,74 @@ weighted avg       0.69      0.69      0.69    196165
 
 Time taken: 1.37 seconds
 ```
+
+##### (3.5) Gradient Boosting Classifier
+
+File: `models/gradient_boosting.py`
+
+```python
+import time
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.metrics import accuracy_score, classification_report
+
+start_time = time.time()
+
+df = pd.read_csv("../processed.csv")
+X = df.drop(
+    columns=[
+        "DRK_YN",
+        "sex",
+        "hear_left",
+        "hear_right",
+        "LDL_chole",
+        "urine_protein",
+    ],
+    axis=1,
+)
+y = df.DRK_YN
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=69
+)
+
+model = GradientBoostingClassifier(n_estimators=100, random_state=69)
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+print(f"Accuracy: {accuracy:.2f}")
+print("Classification Report:")
+print(report)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+
+print(f"Time taken: {elapsed_time:.2f} seconds")
+```
+
+The results are as follows:
+
+```bash
+Accuracy: 0.73
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.74      0.73      0.73     98304
+           1       0.73      0.74      0.73     97861
+
+    accuracy                           0.73    196165
+   macro avg       0.73      0.73      0.73    196165
+weighted avg       0.73      0.73      0.73    196165
+
+Time taken: 204.70 seconds
+```
+
+This is similar to the random forests performance, which is
+expected because they are both based off decision trees.
+
+Unfortunately the scikit-learn library does not support
+parallelization for gradient boosting, so it could not be improved
