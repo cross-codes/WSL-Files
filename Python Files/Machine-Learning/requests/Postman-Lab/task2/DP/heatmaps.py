@@ -1,5 +1,5 @@
 import pandas as pd
-import seaborn as sns
+import seaborn as sb
 import matplotlib.pyplot as plot
 
 df = pd.read_csv("../processed.csv")
@@ -37,7 +37,7 @@ df_subset = df[columns_to_include]
 
 plot.figure(figsize=(12, 10))
 
-heatmap = sns.heatmap(
+heatmap = sb.heatmap(
     df_subset.corr(),
     annot=True,
     cmap="coolwarm",

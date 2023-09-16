@@ -1,13 +1,19 @@
 <div align="center">
-<h1>ML Task - Round 2</h1>
+<h1>Postman AI/ML/DL Recruitment Task - Round 2</h1>
 
-The final report based on my attempt at this task. Also a documentation of my
-thought process during the same.
+A report documenting the process for completing the task
 </div>
 
 Unmodified `.csv` file: `original.csv`
 
 Processed `.csv` file: `processed.csv`
+
+All of the code was executed on a terminal environment, on my
+local machine. Each file should be executed in their directories,
+because they refer to the processed dataset using relative paths
+
+If you want to skip to the final conclusion, scroll all the way
+to the bottom
 
 ---
 
@@ -15,7 +21,7 @@ Processed `.csv` file: `processed.csv`
 
 #### (1.1) Scouting
 
-There are no descriptions for any of the columns, but here are my educated guesses:
+There are no descriptions for any of the columns, but here are my  guesses:
 
 (O) -> Potential outliers
 
@@ -172,7 +178,7 @@ but I have no way to confirm this.
 
 `DRK_YN` contains entires in {"Y", "N"}, so I will convert them into {1, 0}.
 
-I'll also use numbers for gender
+I'll also use numbers for gender. {Male, Female} -> {1, 2}
 
 File: `EDA/convert.py`
 
@@ -195,7 +201,7 @@ So I'm going to add this column next to the weight and height.
 
 From the scouting, the height is in `cm`, so this needs to be accounted for.
 
-File: `EDA\feature_engg.py`
+File: `EDA/feature_engg.py`
 
 ```python
 df = pd.read_csv("../processed.csv")
@@ -320,7 +326,7 @@ df_subset = df[columns_to_include]
 
 plot.figure(figsize=(12, 10))
 
-heatmap = sns.heatmap(
+heatmap = sb.heatmap(
     df_subset.corr(),
     annot=True,
     cmap="coolwarm",
@@ -342,7 +348,7 @@ plot.savefig("./img/heatmap.png", bbox_inches="tight")
 
 From this heatmap, it becomes immediately clear that the
 following parameters have a good correlation
-with the drinking status of a person
+with the drinking status of a person:
 
 (1) Height
 
@@ -365,7 +371,6 @@ File: `DP/histogram.py`
 Images: `DP/img/*_histogram.py`
 
 ```python
-
 df = pd.read_csv("../processed.csv")
 plot.hist(df[df["column_1"] == 0]["column_2"], alpha=0.5, label="label1")
 plot.hist(df[df["column_1"] == 1]["column_2"], alpha=0.5, label="label2")
@@ -499,7 +504,8 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 ```
 
 However, I was able to optimise this by simply not including
-columns with negative or zero correlation.
+columns with negative or zero correlation with `DRK_YN`
+
 In particular, when
 
 ```python
@@ -577,7 +583,6 @@ Line #    Mem usage    Increment  Occurrences   Line Contents
 File: `models/svm.py`
 
 ```python
-
 import time
 import pandas as pd
 from sklearn.model_selection import train_test_split
@@ -610,17 +615,14 @@ end_time = time.time()
 elapsed_time = end_time - start_time
 
 print(f"Time taken: {elapsed_time:.2f} seconds")
-
 ```
 
 I did not know the underlying distribution, so I choose a radial basis function
-for my kernel.
-
-Unfortunately, this does not seem to be working, because
-even after 2 hours, the model was not finished.
+in the `kernel` parameter
 
 Even if there were any potential gains in accuracy, the time
-this model takes drags this down
+this model takes drags this down. The program was not finished
+executing even after 2 hours.
 
 ##### (3.3) Random Forest Classifier
 
@@ -725,7 +727,7 @@ the process took over 3 minutes
 RFC is also sensitive to quantities high intercorrelation. I
 tried dropping some columns that were correlated with a lot of
 others, and trained it on a smaller dataset, but no significant
-change was noted
+change was noted.
 
 ##### (3.4) Gaussian Naive Bayes Classifier
 
@@ -1018,3 +1020,18 @@ expected because they are both based off decision trees.
 
 Unfortunately the scikit-learn library does not support
 parallelization for gradient boosting, so it could not be improved with respect to time
+
+---
+
+Among the 5 models tested, the linear regression model had the
+highest accuracy while being very fast. The Naive Bayes
+classifier was the fastest, but it was less accurate, possibly
+because of the high intercorrelation between the data
+
+The most accurate model I tested were ones based on decision
+trees. Both random forests and gradient boosting had similar
+accuracies, but consumed far too many resources and time.
+
+The SVM model took an undermined amount of time to finish.
+
+---
