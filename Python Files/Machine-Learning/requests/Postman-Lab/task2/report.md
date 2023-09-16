@@ -384,12 +384,6 @@ All matching with the heatmap, which was by far the most useful
 
 ### (3) Model Making
 
-Note: I'm on a terminal environment, so memory consumption is not something I'll
-be including in this analysis. This is primarily because I do not have access
-to the magic `%memit` command or an equivalent, and the standard ways of
-measuring memory consumption would be dependent on my virtual environment's python
-interpreter and the processes running on my laptop
-
 #### (3.1) Linear Regression
 
 File: `models/linear_regression.py`
@@ -400,32 +394,46 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import accuracy_score, classification_report
+from memory_profiler import profile
 
-start_time = time.time()
 
-df = pd.read_csv("../processed.csv")
-X = df.drop(columns=["DRK_YN", "sex"], axis=1)
-y = df.DRK_YN
+@profile
+def main():
+    start_time = time.time()
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=69
-)
+    df = pd.read_csv("../processed.csv")
+    X = df.drop(
+        columns=[
+            "DRK_YN",
+            "sex",
+        ],
+        axis=1,
+    )
+    y = df.DRK_YN
 
-model = LinearRegression()
-model.fit(X_train, y_train)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=69
+    )
 
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred.round())
-report = classification_report(y_test, y_pred.round())
+    model = LinearRegression()
+    model.fit(X_train, y_train)
 
-print(f"Accuracy: {accuracy:.2f}")
-print("Classification Report:")
-print(report)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred.round())
+    report = classification_report(y_test, y_pred.round())
 
-end_time = time.time()
-elapsed_time = end_time - start_time
+    print(f"Accuracy: {accuracy:.2f}")
+    print("Classification Report:")
+    print(report)
 
-print(f"Time taken: {elapsed_time:.2f} seconds")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print(f"Time taken: {elapsed_time:.2f} seconds")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 The result is as follows:
@@ -445,7 +453,49 @@ Classification Report:
    macro avg       0.29      0.29      0.29    196165
 weighted avg       0.72      0.72      0.72    196165
 
-Time taken: 1.87 seconds
+Time taken: 1.84 seconds
+Filename: linear_regression.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     9    147.4 MiB    147.4 MiB           1   @profile
+    10                                         def main():
+    11    147.4 MiB      0.0 MiB           1       start_time = time.time()
+    12                                         
+    13    344.0 MiB    196.6 MiB           1       df = pd.read_csv("../processed.csv")
+    14    524.5 MiB    180.5 MiB           2       X = df.drop(
+    15    344.0 MiB      0.0 MiB           1           columns=[
+    16    344.0 MiB      0.0 MiB           1               "DRK_YN",
+    17    344.0 MiB      0.0 MiB           1               "sex",
+    18                                                     # "hear_left",
+    19                                                     # "hear_right",
+    20                                                     # "LDL_chole",
+    21                                                     # "urine_protein",
+    22                                                 ],
+    23    344.0 MiB      0.0 MiB           1           axis=1,
+    24                                             )
+    25    524.5 MiB      0.0 MiB           1       y = df.DRK_YN
+    26                                         
+    27    742.2 MiB    217.7 MiB           2       X_train, X_test, y_train, y_test = train_test_split(
+    28    524.5 MiB      0.0 MiB           1           X, y, test_size=0.2, random_state=69
+    29                                             )
+    30                                         
+    31    742.2 MiB      0.0 MiB           1       model = LinearRegression()
+    32    769.4 MiB     27.2 MiB           1       model.fit(X_train, y_train)
+    33                                         
+    34    769.6 MiB      0.1 MiB           1       y_pred = model.predict(X_test)
+    35    769.6 MiB      0.0 MiB           1       accuracy = accuracy_score(y_test, y_pred.round())
+    36    770.1 MiB      0.5 MiB           1       report = classification_report(y_test, y_pred.round())
+    37                                         
+    38    770.1 MiB      0.0 MiB           1       print(f"Accuracy: {accuracy:.2f}")
+    39    770.1 MiB      0.0 MiB           1       print("Classification Report:")
+    40    770.1 MiB      0.0 MiB           1       print(report)
+    41                                         
+    42    770.1 MiB      0.0 MiB           1       end_time = time.time()
+    43    770.1 MiB      0.0 MiB           1       elapsed_time = end_time - start_time
+    44                                         
+    45    770.1 MiB      0.0 MiB           1       print(f"Time taken: {elapsed_time:.2f} seconds")
+
 ```
 
 However, I was able to optimise this by simply not including
@@ -479,6 +529,47 @@ Classification Report:
 weighted avg       0.72      0.72      0.72    196165
 
 Time taken: 1.72 seconds
+Filename: linear_regression.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     9    147.5 MiB    147.5 MiB           1   @profile
+    10                                         def main():
+    11    147.5 MiB      0.0 MiB           1       start_time = time.time()
+    12                                         
+    13    343.7 MiB    196.1 MiB           1       df = pd.read_csv("../processed.csv")
+    14    494.3 MiB    150.6 MiB           2       X = df.drop(
+    15    343.7 MiB      0.0 MiB           1           columns=[
+    16                                                     "DRK_YN",
+    17                                                     "sex",
+    18                                                     "hear_left",
+    19                                                     "hear_right",
+    20                                                     "LDL_chole",
+    21                                                     "urine_protein",
+    22                                                 ],
+    23    343.7 MiB      0.0 MiB           1           axis=1,
+    24                                             )
+    25    494.3 MiB      0.0 MiB           1       y = df.DRK_YN
+    26                                         
+    27    681.9 MiB    187.7 MiB           2       X_train, X_test, y_train, y_test = train_test_split(
+    28    494.3 MiB      0.0 MiB           1           X, y, test_size=0.2, random_state=69
+    29                                             )
+    30                                         
+    31    681.9 MiB      0.0 MiB           1       model = LinearRegression()
+    32    706.5 MiB     24.5 MiB           1       model.fit(X_train, y_train)
+    33                                         
+    34    721.6 MiB     15.1 MiB           1       y_pred = model.predict(X_test)
+    35    721.6 MiB      0.0 MiB           1       accuracy = accuracy_score(y_test, y_pred.round())
+    36    722.1 MiB      0.5 MiB           1       report = classification_report(y_test, y_pred.round())
+    37                                         
+    38    722.1 MiB      0.0 MiB           1       print(f"Accuracy: {accuracy:.2f}")
+    39    722.1 MiB      0.0 MiB           1       print("Classification Report:")
+    40    722.1 MiB      0.0 MiB           1       print(report)
+    41                                         
+    42    722.1 MiB      0.0 MiB           1       end_time = time.time()
+    43    722.1 MiB      0.0 MiB           1       elapsed_time = end_time - start_time
+    44                                         
+    45    722.1 MiB      0.0 MiB           1       print(f"Time taken: {elapsed_time:.2f} seconds")
 ```
 
 ##### (3.2) Support Vector Machine
@@ -541,32 +632,40 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+from memory_profiler import profile
 
-start_time = time.time()
 
-df = pd.read_csv("../processed.csv")
-X = df.drop(columns=["DRK_YN", "sex"], axis=1)
-y = df.DRK_YN
+@profile
+def main():
+    start_time = time.time()
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=69
-)
+    df = pd.read_csv("../processed.csv")
+    X = df.drop(columns=["DRK_YN", "sex"], axis=1)
+    y = df.DRK_YN
 
-model = RandomForestClassifier(n_estimators=100, random_state=69, n_jobs=-1)
-model.fit(X_train, y_train)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=69
+    )
 
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-report = classification_report(y_test, y_pred)
+    model = RandomForestClassifier(n_estimators=100, random_state=69, n_jobs=-1)
+    model.fit(X_train, y_train)
 
-print(f"Accuracy: {accuracy:.2f}")
-print("Classification Report:")
-print(report)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    report = classification_report(y_test, y_pred)
 
-end_time = time.time()
-elapsed_time = end_time - start_time
+    print(f"Accuracy: {accuracy:.2f}")
+    print("Classification Report:")
+    print(report)
 
-print(f"Time taken: {elapsed_time:.2f} seconds")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print(f"Time taken: {elapsed_time:.2f} seconds")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 The result is as follows:
@@ -583,7 +682,39 @@ Classification Report:
    macro avg       0.73      0.73      0.73    196165
 weighted avg       0.73      0.73      0.73    196165
 
-Time taken: 84.89 seconds
+Time taken: 77.62 seconds
+Filename: random_forests.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     9    154.0 MiB    154.0 MiB           1   @profile
+    10                                         def main():
+    11    154.0 MiB      0.0 MiB           1       start_time = time.time()
+    12                                         
+    13    480.9 MiB    326.8 MiB           1       df = pd.read_csv("../processed.csv")
+    14    556.6 MiB     75.8 MiB           1       X = df.drop(columns=["DRK_YN", "sex"], axis=1)
+    15    556.6 MiB      0.0 MiB           1       y = df.DRK_YN
+    16                                         
+    17    748.9 MiB    192.2 MiB           2       X_train, X_test, y_train, y_test = train_test_split(
+    18    556.6 MiB      0.0 MiB           1           X, y, test_size=0.2, random_state=69
+    19                                             )
+    20                                         
+    21    748.9 MiB      0.0 MiB           1       model = RandomForestClassifier(n_estimators=100, random_state=69, n_jobs=-
+1)
+    22   3664.8 MiB   2915.9 MiB           1       model.fit(X_train, y_train)
+    23                                         
+    24   3688.7 MiB     23.9 MiB           1       y_pred = model.predict(X_test)
+    25   3688.7 MiB      0.0 MiB           1       accuracy = accuracy_score(y_test, y_pred)
+    26   3688.8 MiB      0.1 MiB           1       report = classification_report(y_test, y_pred)
+    27                                         
+    28   3688.8 MiB      0.0 MiB           1       print(f"Accuracy: {accuracy:.2f}")
+    29   3688.8 MiB      0.0 MiB           1       print("Classification Report:")
+    30   3688.8 MiB      0.0 MiB           1       print(report)
+    31                                         
+    32   3688.8 MiB      0.0 MiB           1       end_time = time.time()
+    33   3688.8 MiB      0.0 MiB           1       elapsed_time = end_time - start_time
+    34                                         
+    35   3688.8 MiB      0.0 MiB           1       print(f"Time taken: {elapsed_time:.2f} seconds")
 ```
 
 It is only slightly more accurate than a linear regression
@@ -606,32 +737,46 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score, classification_report
+from memory_profiler import profile
 
-start_time = time.time()
 
-df = pd.read_csv("../processed.csv")
-X = df.drop(columns=["DRK_YN", "sex"], axis=1)
-y = df.DRK_YN
+@profile
+def main():
+    start_time = time.time()
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=69
-)
+    df = pd.read_csv("../processed.csv")
+    X = df.drop(
+        columns=[
+            "DRK_YN",
+            "sex",
+        ],
+        axis=1,
+    )
+    y = df.DRK_YN
 
-model = GaussianNB()
-model.fit(X_train, y_train)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=69
+    )
 
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-report = classification_report(y_test, y_pred)
+    model = GaussianNB()
+    model.fit(X_train, y_train)
 
-print(f"Accuracy: {accuracy:.2f}")
-print("Classification Report:")
-print(report)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    report = classification_report(y_test, y_pred)
 
-end_time = time.time()
-elapsed_time = end_time - start_time
+    print(f"Accuracy: {accuracy:.2f}")
+    print("Classification Report:")
+    print(report)
 
-print(f"Time taken: {elapsed_time:.2f} seconds")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print(f"Time taken: {elapsed_time:.2f} seconds")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 The results are as follows:
@@ -648,7 +793,48 @@ Classification Report:
    macro avg       0.69      0.69      0.69    196165
 weighted avg       0.69      0.69      0.69    196165
 
-Time taken: 1.51 seconds
+Time taken: 1.69 seconds
+Filename: naive_bayes.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     9    143.5 MiB    143.5 MiB           1   @profile
+    10                                         def main():
+    11    143.5 MiB      0.0 MiB           1       start_time = time.time()
+    12                                         
+    13    339.9 MiB    196.4 MiB           1       df = pd.read_csv("../processed.csv")
+    14    520.5 MiB    180.6 MiB           2       X = df.drop(
+    15    339.9 MiB      0.0 MiB           1           columns=[
+    16    339.9 MiB      0.0 MiB           1               "DRK_YN",
+    17    339.9 MiB      0.0 MiB           1               "sex",
+    18                                                     # "hear_left",
+    19                                                     # "hear_right",
+    20                                                     # "LDL_chole",
+    21                                                     # "urine_protein",
+    22                                                 ],
+    23    339.9 MiB      0.0 MiB           1           axis=1,
+    24                                             )
+    25    520.5 MiB      0.0 MiB           1       y = df.DRK_YN
+    26                                         
+    27    738.2 MiB    217.7 MiB           2       X_train, X_test, y_train, y_test = train_test_split(
+    28    520.5 MiB      0.0 MiB           1           X, y, test_size=0.2, random_state=69
+    29                                             )
+    30                                         
+    31    738.2 MiB      0.0 MiB           1       model = GaussianNB()
+    32    739.2 MiB      1.0 MiB           1       model.fit(X_train, y_train)
+    33                                         
+    34    741.4 MiB      2.2 MiB           1       y_pred = model.predict(X_test)
+    35    741.4 MiB      0.0 MiB           1       accuracy = accuracy_score(y_test, y_pred)
+    36    741.5 MiB      0.1 MiB           1       report = classification_report(y_test, y_pred)
+    37                                         
+    38    741.5 MiB      0.0 MiB           1       print(f"Accuracy: {accuracy:.2f}")
+    39    741.5 MiB      0.0 MiB           1       print("Classification Report:")
+    40    741.5 MiB      0.0 MiB           1       print(report)
+    41                                         
+    42    741.5 MiB      0.0 MiB           1       end_time = time.time()
+    43    741.5 MiB      0.0 MiB           1       elapsed_time = end_time - start_time
+    44                                         
+    45    741.5 MiB      0.0 MiB           1       print(f"Time taken: {elapsed_time:.2f} seconds")
 ```
 
 Since GNB assumes each parameter is independent
@@ -669,7 +855,48 @@ Classification Report:
    macro avg       0.69      0.69      0.69    196165
 weighted avg       0.69      0.69      0.69    196165
 
-Time taken: 1.37 seconds
+Time taken: 1.50 seconds
+Filename: naive_bayes.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     9    143.8 MiB    143.8 MiB           1   @profile
+    10                                         def main():
+    11    143.8 MiB      0.0 MiB           1       start_time = time.time()
+    12                                         
+    13    340.2 MiB    196.4 MiB           1       df = pd.read_csv("../processed.csv")
+    14    491.0 MiB    150.8 MiB           2       X = df.drop(
+    15    340.2 MiB      0.0 MiB           1           columns=[
+    16                                                     "DRK_YN",
+    17                                                     "sex",
+    18                                                     "hear_left",
+    19                                                     "hear_right",
+    20                                                     "LDL_chole",
+    21                                                     "urine_protein",
+    22                                                 ],
+    23    340.2 MiB      0.0 MiB           1           axis=1,
+    24                                             )
+    25    491.0 MiB      0.0 MiB           1       y = df.DRK_YN
+    26                                         
+    27    678.6 MiB    187.6 MiB           2       X_train, X_test, y_train, y_test = train_test_split(
+    28    491.0 MiB      0.0 MiB           1           X, y, test_size=0.2, random_state=69
+    29                                             )
+    30                                         
+    31    678.6 MiB      0.0 MiB           1       model = GaussianNB()
+    32    679.6 MiB      1.0 MiB           1       model.fit(X_train, y_train)
+    33                                         
+    34    711.8 MiB     32.2 MiB           1       y_pred = model.predict(X_test)
+    35    711.8 MiB      0.0 MiB           1       accuracy = accuracy_score(y_test, y_pred)
+    36    711.8 MiB      0.0 MiB           1       report = classification_report(y_test, y_pred)
+    37                                         
+    38    711.8 MiB      0.0 MiB           1       print(f"Accuracy: {accuracy:.2f}")
+    39    711.8 MiB      0.0 MiB           1       print("Classification Report:")
+    40    711.8 MiB      0.0 MiB           1       print(report)
+    41                                         
+    42    711.8 MiB      0.0 MiB           1       end_time = time.time()
+    43    711.8 MiB      0.0 MiB           1       elapsed_time = end_time - start_time
+    44                                         
+    45    711.8 MiB      0.0 MiB           1       print(f"Time taken: {elapsed_time:.2f} seconds")
 ```
 
 ##### (3.5) Gradient Boosting Classifier
@@ -682,42 +909,50 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score, classification_report
+from memory_profiler import profile
 
-start_time = time.time()
 
-df = pd.read_csv("../processed.csv")
-X = df.drop(
-    columns=[
-        "DRK_YN",
-        "sex",
-        "hear_left",
-        "hear_right",
-        "LDL_chole",
-        "urine_protein",
-    ],
-    axis=1,
-)
-y = df.DRK_YN
+@profile
+def main():
+    start_time = time.time()
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=69
-)
+    df = pd.read_csv("../processed.csv")
+    X = df.drop(
+        columns=[
+            "DRK_YN",
+            "sex",
+            "hear_left",
+            "hear_right",
+            "LDL_chole",
+            "urine_protein",
+        ],
+        axis=1,
+    )
+    y = df.DRK_YN
 
-model = GradientBoostingClassifier(n_estimators=100, random_state=69)
-model.fit(X_train, y_train)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=69
+    )
 
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-report = classification_report(y_test, y_pred)
+    model = GradientBoostingClassifier(n_estimators=100, random_state=69)
+    model.fit(X_train, y_train)
 
-print(f"Accuracy: {accuracy:.2f}")
-print("Classification Report:")
-print(report)
+    y_pred = model.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+    report = classification_report(y_test, y_pred)
 
-end_time = time.time()
-elapsed_time = end_time - start_time
+    print(f"Accuracy: {accuracy:.2f}")
+    print("Classification Report:")
+    print(report)
 
-print(f"Time taken: {elapsed_time:.2f} seconds")
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+
+    print(f"Time taken: {elapsed_time:.2f} seconds")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 The results are as follows:
@@ -734,11 +969,52 @@ Classification Report:
    macro avg       0.73      0.73      0.73    196165
 weighted avg       0.73      0.73      0.73    196165
 
-Time taken: 204.70 seconds
+Time taken: 184.72 seconds
+Filename: gradient_boosting.py
+
+Line #    Mem usage    Increment  Occurrences   Line Contents
+=============================================================
+     9    154.0 MiB    154.0 MiB           1   @profile
+    10                                         def main():
+    11    154.0 MiB      0.0 MiB           1       start_time = time.time()
+    12                                         
+    13    350.5 MiB    196.5 MiB           1       df = pd.read_csv("../processed.csv")
+    14    501.2 MiB    150.7 MiB           2       X = df.drop(
+    15    350.5 MiB      0.0 MiB           1           columns=[
+    16                                                     "DRK_YN",
+    17                                                     "sex",
+    18                                                     "hear_left",
+    19                                                     "hear_right",
+    20                                                     "LDL_chole",
+    21                                                     "urine_protein",
+    22                                                 ],
+    23    350.5 MiB      0.0 MiB           1           axis=1,
+    24                                             )
+    25    501.3 MiB      0.1 MiB           1       y = df.DRK_YN
+    26                                         
+    27    689.1 MiB    187.8 MiB           2       X_train, X_test, y_train, y_test = train_test_split(
+    28    501.3 MiB      0.0 MiB           1           X, y, test_size=0.2, random_state=69
+    29                                             )
+    30                                         
+    31    689.1 MiB      0.0 MiB           1       model = GradientBoostingClassifier(n_estimators=100, random_state=69)
+    32    689.7 MiB      0.6 MiB           1       model.fit(X_train, y_train)
+    33                                         
+    34    734.4 MiB     44.8 MiB           1       y_pred = model.predict(X_test)
+    35    734.4 MiB      0.0 MiB           1       accuracy = accuracy_score(y_test, y_pred)
+    36    734.6 MiB      0.1 MiB           1       report = classification_report(y_test, y_pred)
+    37                                         
+    38    734.6 MiB      0.0 MiB           1       print(f"Accuracy: {accuracy:.2f}")
+    39    734.6 MiB      0.0 MiB           1       print("Classification Report:")
+    40    734.6 MiB      0.0 MiB           1       print(report)
+    41                                         
+    42    734.6 MiB      0.0 MiB           1       end_time = time.time()
+    43    734.6 MiB      0.0 MiB           1       elapsed_time = end_time - start_time
+    44                                         
+    45    734.6 MiB      0.0 MiB           1       print(f"Time taken: {elapsed_time:.2f} seconds")
 ```
 
 This is similar to the random forests performance, which is
 expected because they are both based off decision trees.
 
 Unfortunately the scikit-learn library does not support
-parallelization for gradient boosting, so it could not be improved
+parallelization for gradient boosting, so it could not be improved with respect to time
