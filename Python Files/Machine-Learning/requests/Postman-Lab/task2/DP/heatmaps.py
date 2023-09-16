@@ -5,6 +5,7 @@ import matplotlib.pyplot as plot
 df = pd.read_csv("../processed.csv")
 
 columns_to_include = [
+    "sex",
     "age",
     "height",
     "weight",

@@ -4,16 +4,16 @@
 The final report based on my attempt at this task. Also a documentation of my
 thought process during the same.
 </div>
-Local file with the models: main.py
 
 Unmodified `.csv` file: `original.csv`
+
 Processed `.csv` file: `processed.csv`
 
 ---
 
 ## (1) Exploratory Data Analysis
 
-#### (i) Scouting
+#### (1.1) Scouting
 
 There are no descriptions for any of the columns, but here are my educated guesses:
 
@@ -50,9 +50,9 @@ There are no descriptions for any of the columns, but here are my educated guess
 | SMK_stat_type_cd (U) | Smoking status or type of smoking. Values in {1, 2, 3}. Further analysis is required to determine what each number could represent. |
 | DRK_YN             | Drinking status. Y (Yes), N (No).                                                                    |
 
-#### (ii) Data Cleansing process
+#### (1.2) Data Cleansing process
 
-##### (a) Removing null values and duplicates
+##### (1.2.1) Removing null values and duplicates
 
 File: `EDA/null_check.py`
 
@@ -74,7 +74,6 @@ No missing values were found
 File: `EDA/duplicates.py`
 
 ```python
-
 df = pd.read_csv("../original.csv")
 print(df[df.duplicated].shape)  # (26, 24) -> 26 duplicates for 24 columns
 print(df.describe())
@@ -83,10 +82,10 @@ df.to_csv("../processed.csv", index=False)
 print(df.describe())
 ```
 
-Removing duplicates is necessary because it prevents over-fitting, especially when
-they are large in number (26 does not cut it though)
+It is necessary to remove duplicate entries because we do not
+want our models to over-fit. 26 entries is still negligible though.
 
-##### (b) Addressing outliers
+##### (1.2.2) Addressing outliers
 
 The best method according to most sources is using the interquartile range
 approach to detect outliers.
@@ -169,9 +168,11 @@ without a domain expert.
 I also have a suspicion that `sight_left` and `sight_right` must lie in (0, 1],
 but I have no way to confirm this.
 
-##### (c) Converting data types
+##### (1.2.3) Converting data types
 
-`DRK_YN` contains entires in {"Y", "N"}, so I will convert them into {1, 0}
+`DRK_YN` contains entires in {"Y", "N"}, so I will convert them into {1, 0}.
+
+I'll also use numbers for gender
 
 File: `EDA/convert.py`
 
@@ -179,17 +180,19 @@ File: `EDA/convert.py`
 df = pd.read_csv("../processed.csv")
 
 df["DRK_YN"] = df["DRK_YN"].replace({"Y": 1, "N": 0})
+df["sex"] = df["sex"].replace({"Male": 1, "Female": 2})
 df.to_csv("../processed.csv", index=False)
 ```
 
-##### (d) Feature engineering
+##### (1.2.4) Feature engineering
 
 This is just adding useful columns derived from other related columns
 The height and weight are useful parameters for this test, but I think
 it's better if we just combine them and use the BMI instead.
 
 The formula for BMI is $\beta = \frac{\text{Mass(kg)}}{\text{Height(m)}^2}$
-So I'm going to add this column next to the weight and height
+So I'm going to add this column next to the weight and height.
+
 From the scouting, the height is in `cm`, so this needs to be accounted for.
 
 File: `EDA\feature_engg.py`
@@ -233,19 +236,20 @@ df.to_csv("../processed.csv", index=False)
 The BMI (rounded off to two decimal) reports is now present next to the weight column
 
 The columns seem to be meaningful in name, and there is only numerical input, so
-this concludes my preliminary EDA.
+this concludes my preliminary EDA. I may add more columns as I perform data
+plotting however.
 
 ---
 
 ## (2) Data plotting
 
-The objective is to check the relationship between various entries in the dataset
-I will try generating pair plots,
-heatmaps, histograms
+The objective is to check the relationship between various entries in the dataset.
+To do this, I will try generating pair plots,
+heatmaps and histograms between some relevant quantities
 
-##### (a) Pair plots
+##### (2.1) Pair plots
 
-This consumed all of my RAM, and took an hour to perform:
+A very memory intensive operation, needed a lot of time to perform
 
 File: `DP/pair_plots.py`
 
@@ -263,23 +267,21 @@ sb.pairplot(df, diag_kind="kde")
 plot.savefig("./img/pair_plot.png")
 ```
 
-The figure is very detailed, but I am not entirely sure on how to interpret it.
-For smoking type, it seems like 1 and 0 are equally as dense.
+This is essentially a comparison of every column vs every other column.
+The figure is very detailed, so you may zoom in to see each relationship
 
-One relevant feature that I can deduce from this is likely this: In
-the smoking status type,
-(1) -> Never/Minimal
-(2) -> Used to before / less
-(3) -> smoker
+For example, the relationship between `age` and `DRK_YN` is demonstrated by the
+first cell:
 
 Relevant parameters seem to be `SGOT_AST` and `SGOT_ALT` for drinking.
-Further research suggests that the `SGOT_AST`/`SGOT_ALT` ratio is very
-important for drinking detection, so I will add that column.
+Further research suggests that the `SGOT_AST`/`SGOT_ALT` ratio is [very
+important for drinking detection](https://en.wikipedia.org/wiki/AST/ALT_ratio),
+so I will add that column.
 
-##### (b) Heatmaps
+##### (2.2) Heatmaps
 
-The heatmap is very useful. We get a good idea of how each column is
-corelated with the other
+A heatmap is a tool to find the correlation strength among variables.
+The higher the correlation, the darker the color
 
 File: `DP/heatmaps.py`
 
@@ -338,9 +340,25 @@ plot.savefig("./img/heatmap.png", bbox_inches="tight")
 
 ![Heatmap](./DP/img/heatmap.png)
 
-#### (c) Histograms
+From this heatmap, it becomes immediately clear that the
+following parameters have a good correlation
+with the drinking status of a person
 
-Some histograms plotted are as follows:
+(1) Height
+
+(2) Weight
+
+(3) Hemoglobin
+
+(4) Serum Creatinine content
+
+(5) Gamma-Glutamyl content
+
+(6) Smoking status
+
+#### (2.3) Histograms
+
+I plotted some simple histograms based on the above parameters
 
 File: `DP/histogram.py`
 
@@ -430,9 +448,38 @@ weighted avg       0.72      0.72      0.72    196165
 Time taken: 1.87 seconds
 ```
 
-What is a linear regression model, and how did this work?
+However, I was able to optimise this by simply not including
+columns with negative or zero correlation.
+In particular, when
 
-How to interpret this information
+```python
+columns=[
+    "DRK_YN",
+    "sex",
+    "hear_left",
+    "hear_right",
+    "LDL_chole",
+    "urine_protein",
+]
+```
+
+The result is faster, but just as accurate
+
+```bash
+Accuracy: 0.72
+Classification Report:
+              precision    recall  f1-score   support
+
+         0.0       0.71      0.74      0.73     98304
+         1.0       0.73      0.69      0.71     97861
+         2.0       0.00      0.00      0.00         0
+
+    accuracy                           0.72    196165
+   macro avg       0.48      0.48      0.48    196165
+weighted avg       0.72      0.72      0.72    196165
+
+Time taken: 1.72 seconds
+```
 
 ##### (ii) Support Vector Machine
 
@@ -478,6 +525,12 @@ print(f"Time taken: {elapsed_time:.2f} seconds")
 I did not know the underlying distribution, so I choose a radial basis function
 for my kernel.
 
+Unfortunately, this does not seem to be working, because
+even after 2 hours, the model was not finished.
+
+Even if there were any potential gains in accuracy, the time
+this model takes drags this down
+
 ##### (iii) Random Forest Classifiers
 
 File: `models/random_forests.py`
@@ -516,7 +569,7 @@ elapsed_time = end_time - start_time
 print(f"Time taken: {elapsed_time:.2f} seconds")
 ```
 
-The result is as follows
+The result is as follows:
 
 ```bash
 Accuracy: 0.73
@@ -532,5 +585,10 @@ weighted avg       0.73      0.73      0.73    196165
 
 Time taken: 84.89 seconds
 ```
+
+It is only slightly more accurate than a linear regression
+but the amount of time it takes is far more.
+I also set `n_jobs=-1` to use all of my cores. Without this
+the process took over 3 minutes
 
 ##### (iv) Neural Networks

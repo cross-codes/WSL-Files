@@ -7,7 +7,18 @@ from sklearn.metrics import accuracy_score, classification_report
 start_time = time.time()
 
 df = pd.read_csv("../processed.csv")
-X = df.drop(columns=["DRK_YN", "sex"], axis=1)
+X = df.drop(
+    columns=[
+        "DRK_YN",
+        # "age",
+        "sex",
+        "hear_left",
+        "hear_right",
+        "LDL_chole",
+        "urine_protein",
+    ],
+    axis=1,
+)
 y = df.DRK_YN
 
 X_train, X_test, y_train, y_test = train_test_split(
