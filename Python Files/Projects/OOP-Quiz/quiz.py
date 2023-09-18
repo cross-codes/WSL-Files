@@ -1,21 +1,21 @@
 # quiz.py
 
-import time
-import definitions
-import questions
+from time import sleep
+from quiz_control import Quiz_Control as quiz_init
+from test_questions import question_data
 
 if __name__ == "__main__":
-    quiz = definitions.Quiz_Control(2, -1)
+    quiz = quiz_init(2, -1)
 
     print("Initializing questions...")
-    for models in questions.question_data:
+    for models in question_data:
         question = models["text"]
         answer = models["answer"]
         quiz.add_model(question, answer)
-    time.sleep(0.5)
+    sleep(0.5)
 
     print("Starting quiz...\n")
-    time.sleep(0.5)
+    sleep(0.5)
     print("----------------------------------------")
 
     while True:
