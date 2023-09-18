@@ -1,5 +1,8 @@
 # definitions.py
 
+import time
+from prettytable import PrettyTable
+
 
 class Model:
     def __init__(self, text, answer):
@@ -15,6 +18,8 @@ class Quiz_Control:
         self.minus = negative_marks
         self.unasked_questions = set()
         self.asked_questions = set()
+        self.correct_questions = 0
+        self.incorrect_questions = 0
 
     def add_model(self, question, answer):
         self.questions[(question, answer)] = Model(question, answer)
@@ -31,8 +36,10 @@ class Quiz_Control:
     def mod_score(self, status):
         if status is False:
             self.score += self.minus
+            self.incorrect_questions += 1
             return 0
         self.score += self.plus
+        self.correct_questions += 1
         return self.score
 
     def evaluate_response(self, question, answer, response):
@@ -59,8 +66,48 @@ class Quiz_Control:
         return -1
 
     def get_response(self):
-        res = str(input("Enter your answer: "))
-        return res
+        true_literals = {
+            "T",
+            "t",
+            "TRUE",
+            "True",
+            "true",
+            "yes",
+            "Yes",
+            "y",
+            "Y",
+            "YES",
+        }
+        false_literals = {
+            "F",
+            "f",
+            "False",
+            "false",
+            "FALSE",
+            "no",
+            "No",
+            "n",
+            "N",
+            "NO",
+        }
+        while True:
+            res = str(input("Enter your answer: "))
+            if res in true_literals:
+                print("\n")
+                return "True"
+            if res in false_literals:
+                print("\n")
+                return "False"
+
+            print("Invalid input, try again \n")
 
     def get_score(self):
-        return self.score
+        print("Compiling total score...\n")
+        time.sleep(0.5)
+        display_table = PrettyTable(
+            ["Correct questions", "Incorrect questions", "Total score"]
+        )
+        display_table.add_row(
+            [self.correct_questions, self.incorrect_questions, self.score]
+        )
+        print(display_table)

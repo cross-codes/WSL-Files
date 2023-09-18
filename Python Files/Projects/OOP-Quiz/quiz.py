@@ -2,12 +2,12 @@
 
 import time
 import definitions
-import questions
+import test_questions as questions
 
 if __name__ == "__main__":
     quiz = definitions.Quiz_Control(2, -1)
 
-    print("Initializing questions...\n")
+    print("Initializing questions...")
     for models in questions.question_data:
         question = models["text"]
         answer = models["answer"]
@@ -21,7 +21,7 @@ if __name__ == "__main__":
     while True:
         status, question = quiz.ask_question()
         if status == -1:
-            print(quiz.get_score())
+            quiz.get_score()
             break
         answer = quiz.get_answer(question)
         response = quiz.get_response()
