@@ -21,7 +21,7 @@ if __name__ == "__main__":
     while True:
         status, question = quiz.ask_question()
         if status == -1:
-            quiz.get_score()
+            quiz.get_stats()
             break
         answer = quiz.get_answer(question)
         response = quiz.get_response()
