@@ -1,8 +1,8 @@
 # quiz.py
 
 from time import sleep
-from quiz_control import Quiz_Control as quiz_init
-from test_questions import question_data
+from quiz_control import QuizControl as quiz_init
+from questions import question_data
 
 if __name__ == "__main__":
     quiz = quiz_init(2, -1)

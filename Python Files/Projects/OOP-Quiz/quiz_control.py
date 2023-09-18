@@ -11,7 +11,7 @@ class Model:
         self.answer: str = answer
 
 
-class Quiz_Control:
+class QuizControl:
     TRUTH_LITERALS = {
         "T",
         "t",
@@ -140,7 +140,7 @@ class Quiz_Control:
             return 0
         self.stats["curr_streak"] += 1
         print("Correct answer")
-        print("Current Streak: ", self.stats["curr_streak"])
+        print("Current Streak: ", self.stats["curr_streak"], "\n")
         return 0
 
     def evaluate_response(self, question: str, answer: str, response: str) -> int:
