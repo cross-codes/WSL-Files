@@ -2,7 +2,7 @@
 
 import time
 import definitions
-import test_questions as questions
+import questions
 
 if __name__ == "__main__":
     quiz = definitions.Quiz_Control(2, -1)
@@ -16,7 +16,7 @@ if __name__ == "__main__":
 
     print("Starting quiz...\n")
     time.sleep(0.5)
-    print("-------------------------------------------------")
+    print("----------------------------------------")
 
     while True:
         status, question = quiz.ask_question()
