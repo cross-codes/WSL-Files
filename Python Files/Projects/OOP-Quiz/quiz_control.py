@@ -3,6 +3,7 @@
 from __future__ import annotations
 import time
 from prettytable import PrettyTable
+from termcolor import colored
 
 
 class Model:
@@ -135,11 +136,11 @@ class QuizControl:
         if status is False:
             self.stats["streak_arr"].append(self.stats["curr_streak"])
             self.stats["curr_streak"] = 0
-            print("Incorrect answer.")
-            print("Current Streak: ", self.stats["curr_streak"])
+            print(colored("Incorrect answer", "red", attrs=["bold"]))
+            print("Current Streak: ", self.stats["curr_streak"], "\n")
             return 0
         self.stats["curr_streak"] += 1
-        print("Correct answer")
+        print(colored("Correct Answer", "green", attrs=["bold"]))
         print("Current Streak: ", self.stats["curr_streak"], "\n")
         return 0
 
@@ -305,7 +306,7 @@ class QuizControl:
                 self.stats["correct_questions"],
                 self.stats["incorrect_questions"],
                 highest_streak,
-                accuracy,
+                str(accuracy) + " %",
                 str(average_time) + " s",
                 self.score,
             ]
