@@ -1,5 +1,3 @@
-/* Codeforces solution file
-Question: File name?*/
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -8,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.StringTokenizer;
 
@@ -66,40 +65,33 @@ public class Solution implements Runnable {
     return Double.parseDouble(readString());
   }
 
-  void shellsort(int v[], int n) {
-    int gap = -1, i = -1, j = -1, temp = -1;
-
-    for (gap = n / 2; gap > 0; gap /= 2)
-      for (i = gap; i < n; i++)
-        for (j = i - gap; j >= 0 && v[j] > v[j + gap]; j -= gap) {
-          temp = v[j];
-          v[j] = v[j + gap];
-          v[j + gap] = temp;
-        }
-  }
-
-  void reverse(int[] arr, int idxStart, int idxEnd) {
-    for (; idxStart < idxEnd; idxStart++, idxEnd--) {
-      int temp = arr[idxStart];
-      arr[idxStart] = arr[idxEnd];
-      arr[idxEnd] = temp;
-    }
-  }
-
   void solve() throws IOException {
-    int t = readInt();
-    while (t-- > 0) {
-      int n = readInt(), f = readInt(), k = readInt();
-      int nums[] = new int[n];
-      for (int idx = 0; idx < n; idx++) nums[idx] = readInt();
-      int val = nums[f - 1];
-      shellsort(nums, n);
-      reverse(nums, 0, n - 1);
-      if (k == n) out.println("YES");
-      else if (nums[k - 1] == val && k != n && nums[k] == val) out.println("MAYBE");
-      else if (nums[k - 1] == val && k != n && nums[k] != val) out.println("YES");
-      else if (nums[k - 1] < val) out.println("YES");
-      else if (nums[k - 1] > val) out.println("NO");
+    int n = readInt();
+    int[] elem = new int[n];
+    int sum = 0;
+
+    for (int idx = 0; idx < n; idx++) {
+      elem[idx] = readInt();
+      sum += elem[idx];
+    }
+
+    if (sum % n != 0) out.println("0");
+    else {
+      int req = sum / n;
+      ArrayList<Integer> indices = new ArrayList<>();
+      int count = 0;
+      for (int idx = 0; idx < n; idx++) {
+        if (elem[idx] == req) {
+          indices.add(idx + 1);
+          count++;
+        }
+      }
+
+      out.println(count);
+      n = indices.size();
+      for (int idx = 0; idx < n; idx++) {
+        out.print(indices.get(idx) + " ");
+      }
     }
   }
 }

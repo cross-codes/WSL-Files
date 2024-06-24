@@ -1,5 +1,5 @@
 /* Codeforces solution file
-Question: File name?*/
+Question: 1985/B*/
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -66,40 +66,20 @@ public class Solution implements Runnable {
     return Double.parseDouble(readString());
   }
 
-  void shellsort(int v[], int n) {
-    int gap = -1, i = -1, j = -1, temp = -1;
-
-    for (gap = n / 2; gap > 0; gap /= 2)
-      for (i = gap; i < n; i++)
-        for (j = i - gap; j >= 0 && v[j] > v[j + gap]; j -= gap) {
-          temp = v[j];
-          v[j] = v[j + gap];
-          v[j + gap] = temp;
-        }
-  }
-
-  void reverse(int[] arr, int idxStart, int idxEnd) {
-    for (; idxStart < idxEnd; idxStart++, idxEnd--) {
-      int temp = arr[idxStart];
-      arr[idxStart] = arr[idxEnd];
-      arr[idxEnd] = temp;
-    }
-  }
-
   void solve() throws IOException {
     int t = readInt();
     while (t-- > 0) {
-      int n = readInt(), f = readInt(), k = readInt();
-      int nums[] = new int[n];
-      for (int idx = 0; idx < n; idx++) nums[idx] = readInt();
-      int val = nums[f - 1];
-      shellsort(nums, n);
-      reverse(nums, 0, n - 1);
-      if (k == n) out.println("YES");
-      else if (nums[k - 1] == val && k != n && nums[k] == val) out.println("MAYBE");
-      else if (nums[k - 1] == val && k != n && nums[k] != val) out.println("YES");
-      else if (nums[k - 1] < val) out.println("YES");
-      else if (nums[k - 1] > val) out.println("NO");
+      int n = readInt();
+      int maxSum = Integer.MIN_VALUE, maxVal = 2;
+      for (int i = 2; i <= n; i++) {
+        int k = (int) Math.floor(n / i);
+        int currSum = k * (k + 1) * i / 2;
+        if (currSum > maxSum) {
+          maxSum = currSum;
+          maxVal = i;
+        }
+      }
+      out.println(maxVal);
     }
   }
 }
