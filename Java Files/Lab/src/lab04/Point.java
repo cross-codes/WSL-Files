@@ -36,6 +36,8 @@ public class Point {
   }
 
   public static void changeReference(Point other) {
+    other.x = 10;
     other = new Point(-20, -20);
+    other.x = 20;
   }
 }

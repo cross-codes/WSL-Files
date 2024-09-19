@@ -6,13 +6,14 @@ public class TestTax {
     TaxOnSalary tax2 = new TaxOnSalary(true);
 
     try {
+
       tax1.inputSalary();
       tax2.inputSalary();
       System.out.println("Calculated tax of the first user: " + tax1.calculateTax());
       System.out.println("Calculated tax of the second user: " + tax2.calculateTax());
     } catch (Throwable t) {
-      t.printStackTrace();
-      System.exit(1);
+      t.printStackTrace(System.err);
+      return;
     }
   }
 }

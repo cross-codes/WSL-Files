@@ -31,5 +31,6 @@ public class StaticExample {
   public static void main(String[] args) {
     StaticExample statEx = new StaticExample();
     StaticExample.staticMethod2();
+    StaticExample statEx2 = new StaticExample();
   }
 }
