@@ -1,18 +1,31 @@
+#pragma GCC target("avx2,bmi2,popcnt,lzcnt")
 #include <bits/stdc++.h>
 
-using namespace std;
+std::random_device rd{};
+std::mt19937_64 gen{rd()};
 
-int main() {
-  int arr[] = {1, 3, 3, 3, 3, 4, 6, 7};
-  int n = 8;
-  auto a = lower_bound(arr, arr + n, 3);
-  auto b = upper_bound(arr, arr + n, 3);
-  auto c = lower_bound(arr, arr + n, 2);
-  auto d = upper_bound(arr, arr + n, 2);
-  cout << a - arr << "\n";
-  cout << b - arr << "\n";
-  cout << c - arr << "\n";
-  cout << d - arr << "\n";
+double gen_uniform_random(double a, double b) {
+  std::uniform_real_distribution<double> distribution(a, b);
+  return distribution(gen);
+}
 
+int32_t main() {
+  // array[] is as defined in the question
+  double cumulative[] = {0.30, 0.80, 0.85, 1.00};
+  int states[1000];
+
+  for (int i = 0; i < 1000; i++) {
+    double x = gen_uniform_random(0, 1);
+    for (int j = 0; j < 4; j++) {
+      if (cumulative[j] > x) {
+        states[i] = j + 1;
+        break;
+      }
+    }
+  }
+
+  for (int state : states) {
+    std::cout << "State: " << state << "\n";
+  }
   return 0;
 }

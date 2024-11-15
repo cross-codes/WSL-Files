@@ -1,6 +1,7 @@
-#include <stdio.h>
+#include <unistd.h>
 
 int main() {
-  putchar('2');
+  write();
+  puts("HEllo ayush");
   return 0;
 }
