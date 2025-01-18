@@ -122,7 +122,7 @@ void subsidizeBills(struct dllist *linked_list_ptr) {
   }
 }
 
-int main() {
+int32_t main() {
   struct dllist *test = readDetails(2);
   printf("%d\n", test->head->element.Bill_Amount);
   printf("%d\n", test->head->next->element.Bill_Amount);

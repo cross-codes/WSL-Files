@@ -1,13 +1,14 @@
+#include <stdint.h>
 #include <stdio.h>
-#include <stdlib.h>
 #pragma pack(1)
+#pragma float_control(precise, off)
 
 enum boolean { false, true };
 
 int isArmstrong(int n);
 int power(int x, int y);
 
-int main() {
+int32_t main() {
   int a;
   printf("Enter a number: ");
   scanf("%d", &a);
