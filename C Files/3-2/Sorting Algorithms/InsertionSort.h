@@ -1,18 +1,15 @@
 #pragma once
 #include <stddef.h>
 
-constexpr inline void swap(int *array, size_t idx1, size_t idx2) {
-  int temp = array[idx1];
-  array[idx1] = array[idx2];
-  array[idx2] = temp;
-}
+void insertionSort(int *__array, size_t __SIZE) {
+  for (size_t j = 1; j < __SIZE; j++) {
+    size_t i = 0;
+    while (__array[j] > __array[i])
+      i++;
+    int m = __array[j];
+    for (size_t k = j; k > i; k--)
+      __array[k] = __array[k - 1];
 
-constexpr inline void insertionSort(int *array, size_t n) {
-  for (size_t i = 1; i < n; i++) {
-    size_t j = i;
-    while (j > 0 && (array[j - 1] > array[j])) {
-      swap(array, j, j - 1);
-      j--;
-    }
+    __array[i] = m;
   }
 }
