@@ -12,17 +12,17 @@
 void mergeSort(int[], ssize_t, ssize_t);
 
 int32_t main(int argc, char **argv) {
-  int array[] = {1, 4, 12, 2, 3};
+  FILE *file = fopen("data/marks.txt", "r");
+  int array[1000];
+
+  for (size_t i = 0; i < 1000; i++)
+    fscanf(file, "%d", array + i);
 
   clock_t start = clock();
-  mergeSort(array, 0U, 4U);
+  mergeSort(array, 0U, 1000);
   clock_t end = clock();
 
-  printf("Case #1: Time taken: %lf s\n",
-         (double)(end - start) / (CLOCKS_PER_SEC));
-
-  for (size_t i = 0; i < 5; i++)
-    printf("%d ", array[i]);
+  printf("Time taken: %lf s\n", (double)(end - start) / (CLOCKS_PER_SEC));
 
   return 0;
 }
