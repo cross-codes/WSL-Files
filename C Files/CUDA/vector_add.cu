@@ -1,4 +1,3 @@
-#include <assert.h>
 #include <chrono>
 #include <cuda.h>
 #include <cuda_runtime.h>
