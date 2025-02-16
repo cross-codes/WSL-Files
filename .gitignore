@@ -1,5 +1,8 @@
 # Gitignore for the following technologies: Angular, NuxtJS, Python, Node, Lua, LaTeX, R, Vim, Zsh, Rust, Windows, Vue, venv, Julia, Go, C++, CMake, C, Bazel, Java, CUDA, Clojure, Chocolatey, Fish, Django, yarn
 
+# Rough
+Rough Workspace/
+
 ## Angular ##
 # compiled output
 dist/
