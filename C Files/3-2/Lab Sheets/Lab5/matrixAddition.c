@@ -5,28 +5,31 @@
 #include <time.h>
 
 #pragma pack(1)
-#define N 50000
+#define N 10
 
-void rowAddition(int[N][N], int[N][N], int[N][N]);
-void columnAddition(int[N][N], int[N][N], int[N][N]);
-void printMatrix(int[N][N]);
+void rowAddition(int64_t[N][N], int64_t[N][N], int64_t[N][N]);
+void columnAddition(int64_t[N][N], int64_t[N][N], int64_t[N][N]);
+void printMatrix(int64_t[N][N]);
 
 int32_t main(int argc, char **argv) {
 
-  int matrix1[N][N], matrix2[N][N], matrix3[N][N];
+  int64_t matrix1[N][N], matrix2[N][N], matrix3[N][N];
 
   memset(matrix3, 0x00, sizeof(matrix3));
 
+  clock_t start = clock();
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++) {
-      matrix1[i][j] = rand() % 100;
-      matrix2[i][j] = rand() % 100;
+      matrix1[i][j] = 1;
+      matrix2[i][j] = 1;
     }
   }
-
-  clock_t start = clock();
-  rowAddition(matrix1, matrix2, matrix3);
   clock_t end = clock();
+  printf("Random filling: %f s\n", (double)(end - start) / CLOCKS_PER_SEC);
+
+  start = clock();
+  rowAddition(matrix1, matrix2, matrix3);
+  end = clock();
 
   printf("Row addition: %f s\n", (double)(end - start) / CLOCKS_PER_SEC);
 
@@ -40,14 +43,14 @@ int32_t main(int argc, char **argv) {
   return 0;
 }
 
-void rowAddition(int matrix1[N][N], int matrix2[N][N], int matrix3[N][N]) {
+void rowAddition(int64_t matrix1[N][N], int64_t matrix2[N][N], int64_t matrix3[N][N]) {
   for (size_t y = 0; y < N; y++) {
     for (size_t x = 0; x < N; x++)
       matrix3[y][x] = matrix2[y][x] + matrix1[y][x];
   }
 }
 
-void columnAddition(int matrix1[N][N], int matrix2[N][N], int matrix3[N][N]) {
+void columnAddition(int64_t matrix1[N][N], int64_t matrix2[N][N], int64_t matrix3[N][N]) {
   for (size_t x = 0; x < N; x++) {
     for (size_t y = 0; y < N; y++) {
       matrix3[y][x] = matrix1[y][x] + matrix2[y][x];
@@ -55,10 +58,10 @@ void columnAddition(int matrix1[N][N], int matrix2[N][N], int matrix3[N][N]) {
   }
 }
 
-void printMatrix(int matrix[N][N]) {
+void printMatrix(int64_t matrix[N][N]) {
   for (size_t y = 0; y < N; y++) {
     for (size_t x = 0; x < N; x++) {
-      printf("%d ", matrix[y][x]);
+      printf("%ld ", matrix[y][x]);
     }
     printf("\n");
   }

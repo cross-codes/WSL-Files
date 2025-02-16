@@ -1,0 +1,10 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: MySQL
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=9980166604
+    volumes:
+      - /home/cross/.mysql/data/db:/var/lib/mysql
