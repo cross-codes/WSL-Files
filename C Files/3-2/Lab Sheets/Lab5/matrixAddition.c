@@ -5,7 +5,7 @@
 #include <time.h>
 
 #pragma pack(1)
-#define N 10
+#define N 10000
 
 void rowAddition(int64_t[N][N], int64_t[N][N], int64_t[N][N]);
 void columnAddition(int64_t[N][N], int64_t[N][N], int64_t[N][N]);
@@ -20,8 +20,8 @@ int32_t main(int argc, char **argv) {
   clock_t start = clock();
   for (int i = 0; i < N; i++) {
     for (int j = 0; j < N; j++) {
-      matrix1[i][j] = 1;
-      matrix2[i][j] = 1;
+      matrix1[i][j] = rand() % 100;
+      matrix2[i][j] = rand() % 100;
     }
   }
   clock_t end = clock();
