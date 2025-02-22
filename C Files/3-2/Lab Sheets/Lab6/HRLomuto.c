@@ -22,9 +22,9 @@ ptrdiff_t twoWayHoarePartition(Person **, ptrdiff_t, ptrdiff_t, ptrdiff_t);
 ptrdiff_t threeWayHoarePartition(Person **, ptrdiff_t, ptrdiff_t, ptrdiff_t);
 ptrdiff_t lomutoPartition(Person **, ptrdiff_t, ptrdiff_t, ptrdiff_t);
 
-void testStatistic(ptrdiff_t (*f)(Person **, ptrdiff_t, ptrdiff_t, ptrdiff_t));
+void testStatistic(ptrdiff_t (*)(Person **, ptrdiff_t, ptrdiff_t, ptrdiff_t));
 
-void measure__(ptrdiff_t (*f)(Person **, ptrdiff_t, ptrdiff_t, ptrdiff_t),
+void measure__(ptrdiff_t (*)(Person **, ptrdiff_t, ptrdiff_t, ptrdiff_t),
                char *fileName, ptrdiff_t length, int caseNumber);
 
 int32_t main(int argc, char **argv) {
