@@ -80,11 +80,13 @@ void traverse_post_order(Node *node)
 void insert(BST *bst, int value)
 {
   Node *node = new_node(value);
+
   if (bst->root == NULL)
   {
     bst->root = node;
     return;
   }
+
   Node *current = bst->root;
   while (current != NULL)
   {
@@ -337,7 +339,7 @@ void delete(BST *bst, Node *node)
   node->value = temp->value;
   delete (bst, temp);
   return;
-}
+} 
 
 void remove_half_nodes(BST *bst, Node *node)
 {
@@ -354,6 +356,8 @@ void remove_half_nodes(BST *bst, Node *node)
   remove_half_nodes(bst, node->left);
   remove_half_nodes(bst, node->right);
 }
+
+
 
 ListNode *flatten(Node *root)
 {
@@ -374,18 +378,13 @@ ListNode *flatten(Node *root)
 // Driver program to test the above functions (feel free to play around with
 // this)
 /*
-          2
-        1
-         3
-          4
-           5
-            6
-             7
-              8
+          10
+        4    7
+      3   5
 */
 int main()
 {
-  int elements[] = {2, 1, 3, 4, 5, 6, 7, 8};
+  int elements[] = {10, 4, 3, 7, 5, 6, 1, 8};
   BST *bst       = constructBST(elements, 8);
   traverse_pre_order(bst->root);
 
