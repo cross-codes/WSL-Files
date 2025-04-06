@@ -18,7 +18,7 @@ struct node
   struct node *right;
 };
 
-struct bst
+struct bst;
 {
   struct node *root;
 };
