@@ -49,7 +49,7 @@ int32_t main(int argc, char **argv)
       int ID;
       char name[30];
       fscanf(file, "%d,%29[^\n]", &ID, name);
-      struct Student *student = (struct Student *)malloc(sizeof(struct))
+      struct Student *student = (struct Student *)malloc(sizeof(struct Student));
     }
     else if (choice == 2)
 

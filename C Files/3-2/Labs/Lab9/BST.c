@@ -18,7 +18,7 @@ struct node
   struct node *right;
 };
 
-struct bst;
+struct bst
 {
   struct node *root;
 };
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
     fscanf(handle, "%c%c", &_, &_);
 
     for (size_t i = 0; i < n; i++)
-      fscanf(handle, " %d", array + i);
+      fscanf(handle, "%d ", array + i);
 
     trees[trees_pos++] = constructBST(array, n);
 

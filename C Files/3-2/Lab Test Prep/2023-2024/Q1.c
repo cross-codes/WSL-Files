@@ -13,7 +13,7 @@ struct linked_list_node
 struct tree_node
 {
   int key;
-  struct linked_list_node *head;
+  struct linked_list_node *list_head;
   struct tree_node *left, *right;
 };
 
@@ -73,16 +73,16 @@ int main(int argc, char **argv)
   char buf[20001];
   while (n-- > 0)
   {
-    bool first_node = false;
+    bool first_node = true;
     ListNode *head = NULL, *actual_head = NULL;
     fgets(buf, sizeof(buf), input);
     char *tokens = strtok(buf, " ");
     while (tokens != NULL)
     {
-      if (!first_node)
+      if (first_node)
       {
         actual_head = new_list_node(atoi(tokens));
-        first_node  = true;
+        first_node  = false;
       }
       else
         head = push_front_LL(head, new_list_node(atoi(tokens)));
@@ -136,15 +136,12 @@ void traverse(BinarySearchTree *tree)
 // TC: O(1)
 [[nodiscard]] TreeNode *new_tree_node(ListNode *head)
 {
-  TreeNode *new_node = (TreeNode *)malloc(sizeof(TreeNode));
+  TreeNode *new_node  = (TreeNode *)malloc(sizeof(TreeNode));
 
-  new_node->key      = head->key;
-
-  new_node->head     = (ListNode *)malloc(sizeof(ListNode));
-  *new_node->head    = *head;
-
-  new_node->left     = NULL;
-  new_node->right    = NULL;
+  new_node->key       = head->key;
+  new_node->list_head = head;
+  new_node->left      = NULL;
+  new_node->right     = NULL;
 
   return new_node;
 }
@@ -271,14 +268,14 @@ void merge_sort_from_second_(ListNode *head)
   }
 }
 
-// Sort linked lists in every noe
+// Sort linked lists in every node
 // TC: O(k.n log(n))
 void sort_dfs_(TreeNode *root)
 {
   if (root == NULL)
     return;
 
-  merge_sort_from_second_(root->head);
+  merge_sort_from_second_(root->list_head);
   sort_dfs_(root->left);
   sort_dfs_(root->right);
 }
@@ -305,6 +302,6 @@ void traverse_dfs_(TreeNode *root, FILE *output)
     return;
 
   traverse_dfs_(root->left, output);
-  print_linked_list_(root->head, output);
+  print_linked_list_(root->list_head, output);
   traverse_dfs_(root->right, output);
 }
