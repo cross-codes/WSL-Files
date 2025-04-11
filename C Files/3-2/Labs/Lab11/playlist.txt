@@ -1,0 +1,93 @@
+Metallica; Nothing Else Matters; 72
+Michael Jackson; Billie Jean; 66
+Eagles; Hotel California; 54
+Led Zeppelin; Stairway To Heaven; 90
+Madonna; Like A Prayer; 53
+Iron Maiden; Hallowed Be Thy Name; 78
+AC/DC; Thunderstruck; 66
+Shaan; Jab Se Tere Naina; 23
+Linkin Park; What I've Done; 82
+Zakir Hussain; Brahmand: The Final Frontier; 100
+Dire Straits; Sultans Of Swing; 53
+Guns N' Roses; Sweet Child O' Mine; 77
+Black Sabbath; War Pigs; 84
+Judas Priest; Painkiller; 91
+Sia; Chandelier; 43
+Motorhead; Ace Of Spades; 25
+Opeth; Ghost Of Perdition; 16
+Pantera; Cemetery Gates; 36
+The Beatles; Norwegian Wood; 89
+King Diamond; Abigail; 12
+Nirvana; Smells Like Teen Spirit; 50
+Dream Theater; Octavarium; 99
+MAGIC!; Rude; 71
+Sonu Nigam; Abhi Mujh Mein Kahin; 98
+Coldplay; Paradise; 62
+Avicii; The Nights; 56
+Maroon 5; Animals; 2
+Imagine Dragons; Demons; 81
+One Direction; Night Changes; 51
+Amit Trivedi; Love You Zindagi; 19
+Justin Bieber; Baby; 1
+KK; Khuda Jaane; 7
+Lata Mangeshkar; Lag Ja Gale Se Phir; 100
+Heart; Magic Man; 44
+Ennio Morricone; The Ecstasy Of Gold; 67
+Boris; Introduction; 77
+Queen; Stone Cold Crazy; 78
+Joe Hisaishi; The Sixth Station; 100
+Radiohead; Creep; 20
+Hans Zimmer; Dream of Arrakis; 80
+Icona Pop; I Love It; 27
+Lewis Capaldi; Someone You Loved; 17
+Harry Styles; Late Night Talking; 8
+Pink Floyd; Time; 93
+Alcest; Autre Temps; 37
+Elder; Legend; 100
+Green Day; 21 Guns; 65
+Lynyrd Skynyrd; Free Bird; 100
+Yiruma; River Flows In You; 0
+Simon & Garfunkel; The Sound Of Silence; 67
+The Doors; The End; 47
+TOOL; Lateralus; 40
+Foxtails Brigade; Gimme A Sign; 50
+A.R. Rahman; Kun Faya Kun; 81
+Opeth; To Bid You Farewell; 100
+Muse; Knights of Cydonia; 23
+John Lennon; Imagine; 70
+Mayhem; Freezing Moon; 12
+FM Attack; Sleepless Nights; 11
+Red Hot Chili Peppers; Californication; 40
+Jesper Kyd; Ezio's Family; 76
+Howard Shore; Rivendell; 100
+Anoushka Shankar; Red Sun; 67
+The Vaccines; Bad Mood; 49
+Lana Del Rey; Ultraviolence; 69
+Taylor Swift; cardigan; 56
+Billie Eilish; bad guy; 43
+Metallica; The Four Horsemen; 100
+Anuv Jain; Riha; 0
+Death; Voice Of The Soul; 55
+Kishore Kumar; Pyar Hamen Kis Mod Pe; 87
+Thaikkudam Bridge; Nostalgia 2; 89
+Shankar-Ehsaan-Loy; Mitwa; 43
+Neutral Milk Hotel; Oh Comely; 98
+Shankar Mahadevan; Maa; 100
+Shakira; Waka Waka (This Time For Africa); 11
+Johnny Cash; Folsom Prison Blues; 14
+Dick Dale; Miserlou; 76
+Vishal Mishra; Kaise Hua; 73
+Ayushmann Khurrana; Pani Da Rang; 54
+Arijit Singh; Tum Hi Ho; 100
+The Beatles; Here Comes The Sun; 26
+Deftones; Digital Bath; 81
+Van Halen; Eruption; 21
+Celine Dion; My Heart Will Go On; 3
+Jeff Buckley; Hallelujah; 28
+Eminem; Lose Yourself; 75
+Wu-Tang Clan; C.R.E.A.M.; 45
+Emperor; Allure; 85
+Disturbed; Decadence; 57
+Snarky Puppy; Lingus; 94
+Marty Friedman; Forbidden City; 40
+System Of A Down; Toxicity; 12
