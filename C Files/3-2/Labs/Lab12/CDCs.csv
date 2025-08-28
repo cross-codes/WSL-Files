@@ -1,0 +1,28 @@
+15
+11
+CS F111,Computer Programming,4
+CS F214,Logic in Computer Science,3
+CS F222,Discrete Structures for Computer Science,3
+CS F213,Object Oriented Programming,4
+CS F215,Digital Design,4
+CS F211,Data Structures and Algorithms,4
+CS F241,Microprocessors and Interfacing,4
+CS F212,Database Systems,4
+CS F351,Theory of Computation,3
+CS F372,Operating Systems,3
+CS F301,Principles of Programming Languages,2
+CS F342,Computer Architecture,4
+CS F363,Compiler Construction,3
+CS F363,Design and Analysis of Algorithms,3
+CS F303,Computer Networks,4
+CS F211,CS F222
+CS F213,CS F111
+CS F301,CS F211
+CS F303,CS F372
+CS F342,CS F241
+CS F342,CS F215
+CS F351,CS F222
+CS F351,CS F214
+CS F363,CS F351
+CS F363,CS F301
+CS F364,CS F211
